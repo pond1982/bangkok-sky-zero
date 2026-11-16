@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-    <meta name="theme-color" content="#222b26" />
-    <title>Bangkok Sortie — Mitsubishi A6M Zero</title>
+    <meta name="theme-color" content="#182c32" />
+    <title>Bangkok Sky Zero — Mitsubishi A6M Zero</title>
     <style>
       :root {
         color-scheme: dark;
         --ink: #f2f2e8;
-        --muted: #b4bfb0;
+        --muted: #b6c5c4;
         --gold: #f1cd85;
-        --border: #465448;
-        --surface: #222b26;
+        --border: #405960;
+        --surface: #182c32;
         --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
         font-family: Barlow, "Helvetica Neue", Arial, sans-serif;
         background: var(--surface);
@@ -64,7 +64,7 @@
         padding: 0 2.25%;
         gap: 12px;
         min-height: 58px;
-        border-bottom: 1px solid #536054;
+        border-bottom: 1px solid #476069;
       }
       .identity,
       .tools,
@@ -230,7 +230,7 @@
         top: 17px;
         transform: translateX(-50%);
         padding: 7px 10px;
-        background: #222b26ec;
+        background: #182c32ec;
         color: var(--gold);
         font-size: 10px;
       }
@@ -459,7 +459,7 @@
       .debrief {
         position: absolute;
         z-index: 2;
-        background: #232d26f5;
+        background: #1a3038f5;
         color: #faf4df;
       }
       .launch-strip {
@@ -480,7 +480,7 @@
       .launch-strip button,
       .debrief button {
         background: #f1cd85;
-        color: #222b26;
+        color: #182c32;
         border-radius: 2px;
         padding: 10px 14px;
         font-weight: 650;
@@ -525,7 +525,7 @@
         left: 0;
         white-space: nowrap;
         color: #fff5d8;
-        background: #263128e8;
+        background: #20333be8;
         font: 500 10px var(--mono);
         letter-spacing: 0.04em;
         border-radius: 2px;
@@ -540,7 +540,7 @@
         border-left: 1px solid #eee5cc;
       }
       .hint {
-        background: #232d26d9;
+        background: #1a3038d9;
       }
       .restart {
         display: block;
@@ -714,15 +714,291 @@
           padding: 0 5px;
         }
       }
+      footer {
+        padding: 0;
+        display: block;
+        min-height: 0;
+      }
+      .console,
+      #flight-level {
+        padding: 8px max(16px, 2.25%);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      #flight-level {
+        justify-content: flex-start;
+        min-height: 56px;
+        gap: clamp(10px, 2.2vw, 32px);
+        background: #20373f;
+        border-bottom: 1px solid #354c51;
+      }
+      .current-altitude {
+        min-width: 78px;
+      }
+      .current-altitude .label {
+        font-size: 9px;
+        margin-bottom: 3px;
+      }
+      .current-altitude output {
+        font: 17px var(--mono);
+        font-variant-numeric: tabular-nums;
+      }
+      .alt-buttons {
+        display: flex;
+        gap: 5px;
+      }
+      .alt-buttons button,
+      #clock-rate {
+        color: #f9e9c7;
+        border: 1px solid #778780;
+        border-radius: 3px;
+        background: #1a3038;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .alt-buttons button {
+        padding: 8px 13px;
+        min-height: 35px;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .alt-buttons button:hover,
+      #clock-rate:hover {
+        background: #33494c;
+      }
+      .alt-buttons button:active,
+      #clock-rate[aria-pressed="true"] {
+        background: #f1cd85;
+        color: #182c32;
+      }
+      .target-altitude {
+        display: flex;
+        gap: 9px;
+        align-items: center;
+      }
+      .target-altitude span,
+      #vertical-state {
+        font: 11px var(--mono);
+        color: #d6e4df;
+      }
+      .target-altitude span {
+        white-space: nowrap;
+      }
+      .target-altitude output {
+        color: var(--gold);
+      }
+      .target-altitude input {
+        width: clamp(65px, 13vw, 200px);
+        margin: 0;
+        padding: 5px 0;
+        accent-color: var(--gold);
+      }
+      #vertical-state {
+        margin-left: auto;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      .console {
+        min-height: 46px;
+        padding-top: 5px;
+        padding-bottom: max(5px, env(safe-area-inset-bottom));
+      }
+      .console .camera {
+        width: auto;
+      }
+      .console .view-options {
+        width: auto;
+      }
+      .console .instruments {
+        display: flex;
+        gap: clamp(12px, 3vw, 48px);
+      }
+      .console .instrument {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+      }
+      .console .instrument output {
+        font-size: 13px;
+      }
+      main[data-mode="free"] .combat-only,
+      main[data-mode="free"] #touch-fire {
+        display: none;
+      }
+      .navigation {
+        position: absolute;
+        left: 15px;
+        top: 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #172c34e8;
+        color: #f4f1de;
+        padding: 8px 10px;
+        border-radius: 3px;
+        pointer-events: none;
+      }
+      #region {
+        font:
+          600 14px Barlow,
+          Arial,
+          sans-serif;
+      }
+      .distance {
+        font: 10px var(--mono);
+        margin-top: 3px;
+        color: #c2d0cc;
+      }
+      #return-bearing {
+        margin-left: 8px;
+      }
+      #clock-rate {
+        pointer-events: auto;
+        min-height: 30px;
+        padding: 4px 7px;
+      }
+      .launch-strip {
+        padding: 4px;
+        gap: 4px;
+      }
+      #dogfight {
+        background: transparent;
+        color: #eaece3;
+      }
+      #dogfight:hover {
+        background: #35494d;
+      }
+      .help-actions {
+        display: flex;
+        gap: 7px;
+      }
+      .help-actions button {
+        font-size: 12px;
+      }
+      @media (max-width: 750px) {
+        .console,
+        #flight-level {
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+        .console .instrument {
+          display: grid;
+          gap: 2px;
+        }
+        #flight-level {
+          gap: 10px;
+        }
+        .target-altitude {
+          display: grid;
+          gap: 3px;
+        }
+        .view-options button {
+          padding: 7px 8px;
+        }
+      }
+      @media (max-width: 540px) {
+        #flight-level {
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          gap: 6px 10px;
+          padding: 7px 10px;
+        }
+        .current-altitude {
+          min-width: 60px;
+        }
+        .current-altitude output {
+          font-size: 16px;
+        }
+        .alt-buttons {
+          justify-content: flex-start;
+        }
+        .alt-buttons button {
+          min-height: 38px;
+          padding: 6px 10px;
+        }
+        .target-altitude {
+          grid-column: 1 / -1;
+          grid-row: 2;
+          display: flex;
+          gap: 10px;
+        }
+        .target-altitude input {
+          flex: 1;
+        }
+        #vertical-state {
+          grid-row: 1;
+          grid-column: 3;
+          font-size: 9px;
+          max-width: 85px;
+        }
+        .console {
+          min-height: 40px;
+          padding: 3px 9px max(3px, env(safe-area-inset-bottom));
+          gap: 7px;
+        }
+        .console .instruments {
+          gap: 10px;
+        }
+        .console .instrument .label {
+          font-size: 8px;
+        }
+        .console .instrument output {
+          font-size: 11px;
+        }
+        .console .instrument .meter-unit {
+          font-size: 8px;
+        }
+        main[data-mode="combat"] .console .instruments {
+          gap: 5px;
+        }
+        main[data-mode="combat"] .console .camera button {
+          font-size: 11px;
+          padding: 7px 5px;
+        }
+        .navigation {
+          top: 9px;
+          left: 9px;
+          gap: 6px;
+        }
+        .launch-strip {
+          padding: 4px;
+        }
+        .integrity {
+          display: none;
+        }
+      }
+      @media (max-height: 470px) and (min-width: 541px) {
+        .console {
+          min-height: 32px;
+        }
+        #flight-level {
+          min-height: 38px;
+          padding-top: 3px;
+          padding-bottom: 3px;
+        }
+        .alt-buttons button {
+          min-height: 30px;
+          padding: 5px 10px;
+        }
+        .launch-strip {
+          bottom: 6px;
+        }
+      }
     </style>
   </head>
   <body>
-    <main aria-label="Bangkok Sortie flight simulator">
+    <main aria-label="Bangkok Sky Zero flight simulator">
       <header>
         <div class="identity">
           <span class="mark" aria-hidden="true"></span>
-          <h1>Bangkok <i>Sortie</i></h1>
-          <span class="subhead">Chao Phraya <span aria-hidden="true">/</span> <b>Mitsubishi </b>A6M Zero</span>
+          <h1>Bangkok <i>Sky Zero</i></h1>
+          <span class="subhead"
+            >Modern Bangkok <span aria-hidden="true">/</span> <b>Mitsubishi </b>A6M Zero</span
+          >
         </div>
         <div class="tools">
           <button id="pause" aria-label="Pause flight" title="Pause or resume (P)">
@@ -740,10 +1016,26 @@
           >This simulator requires Canvas 2D.</canvas
         >
         <div id="places" aria-hidden="true"></div>
+        <div class="navigation" aria-label="Navigation">
+          <div>
+            <strong id="region">Chao Phraya</strong>
+            <div class="distance">
+              <span id="range">0.0 km from start</span><span id="return-bearing" hidden></span>
+            </div>
+          </div>
+          <button
+            id="clock-rate"
+            hidden
+            aria-pressed="false"
+            title="Run free flight at four times normal speed"
+          >
+            4× time
+          </button>
+        </div>
         <div class="status" id="paused" role="status" hidden>Flight paused</div>
         <div class="launch-strip" id="briefing">
-          <span>Intercept the fighter over the river.</span>
-          <button id="launch">Fly sortie <span aria-hidden="true">↗</span></button>
+          <button id="launch">Free flight <span aria-hidden="true">↗</span></button>
+          <button id="dogfight">Dogfight</button>
         </div>
         <div class="debrief" id="debrief" hidden>
           <h2>Aircraft lost</h2>
@@ -760,37 +1052,59 @@
         </div>
       </section>
       <footer>
-        <div class="camera">
-          <span class="label" aria-hidden="true">Camera</span>
-          <div class="view-options" role="group" aria-label="Camera view">
-            <button data-view="overhead" aria-pressed="true">Overhead</button>
-            <button data-view="chase" aria-pressed="false">Chase</button>
-            <button data-view="cockpit" aria-pressed="false">Cockpit</button>
+        <section id="flight-level" aria-label="Altitude controls">
+          <div class="current-altitude">
+            <div class="label">Altitude</div>
+            <div><output id="alt" aria-live="off">5,300</output> <span class="meter-unit">ft</span></div>
           </div>
-        </div>
-        <div class="instruments" aria-label="Flight instruments">
-          <div class="instrument condition">
-            <span class="label">Airframe</span>
-            <div>
-              <span class="integrity" aria-hidden="true"></span
-              ><output id="health" aria-live="off">100%</output>
+          <div class="alt-buttons">
+            <button id="descend" title="Descend (↓ or S)">↓ Descend</button
+            ><button id="climb" title="Climb (↑ or W)">↑ Climb</button>
+          </div>
+          <label class="target-altitude"
+            ><span>Target <output id="alt-target">5,300 ft</output></span>
+            <input
+              id="altitude"
+              aria-label="Target altitude"
+              type="range"
+              min="200"
+              max="16000"
+              step="100"
+              value="5300"
+            />
+          </label>
+          <span id="vertical-state">Level</span>
+        </section>
+        <div class="console">
+          <div class="camera">
+            <span class="label" aria-hidden="true">Camera</span>
+            <div class="view-options" role="group" aria-label="Camera view">
+              <button data-view="overhead" aria-pressed="false">Overhead</button>
+              <button data-view="chase" aria-pressed="true">Chase</button>
+              <button data-view="cockpit" aria-pressed="false">Cockpit</button>
             </div>
           </div>
-          <div class="instrument">
-            <span class="label">Victories</span>
-            <div><output id="score">0</output></div>
-          </div>
-          <div class="instrument">
-            <span class="label">Speed</span>
-            <div><output id="speed" aria-live="off">187</output> <span class="meter-unit">kt</span></div>
-          </div>
-          <div class="instrument">
-            <span class="label">Alt</span>
-            <div><output id="alt" aria-live="off">4,360</output> <span class="meter-unit">ft</span></div>
-          </div>
-          <div class="instrument">
-            <span class="label">Hdg</span>
-            <div><output id="heading" aria-live="off">325°</output></div>
+          <div class="instruments" aria-label="Flight instruments">
+            <div class="instrument condition combat-only">
+              <span class="label">Airframe</span>
+              <div>
+                <span class="integrity" aria-hidden="true"></span
+                ><output id="health" aria-live="off">100%</output>
+              </div>
+            </div>
+            <div class="instrument combat-only">
+              <span class="label">Victories</span>
+              <div><output id="score">0</output></div>
+            </div>
+            <div class="instrument">
+              <span class="label">Speed</span>
+              <div><output id="speed" aria-live="off">187</output> <span class="meter-unit">kt</span></div>
+            </div>
+
+            <div class="instrument">
+              <span class="label">Hdg</span>
+              <div><output id="heading" aria-live="off">325°</output></div>
+            </div>
           </div>
         </div>
       </footer>
@@ -807,10 +1121,10 @@
         </div>
         <div>
           <dt>Climb / descend</dt>
-          <dd><kbd>↑ ↓</kbd> or set altitude below</dd>
+          <dd><kbd>↑ / W</kbd> to climb, <kbd>↓ / S</kbd> to descend</dd>
         </div>
         <div>
-          <dt>Wing guns</dt>
+          <dt>Wing guns in dogfight</dt>
           <dd>Hold click, <kbd>F</kbd>, or Fire</dd>
         </div>
         <div>
@@ -830,486 +1144,932 @@
           <dd><kbd>P</kbd></dd>
         </div>
       </dl>
-      <label class="alt-setting"
-        >Target altitude <output id="alt-target">4,360 ft</output>
-        <input id="altitude" aria-label="Target altitude" type="range" min="0" max="100" value="40" />
-      </label>
-      <button id="restart" class="restart">Restart over the river</button>
+      <div class="help-actions">
+        <button id="restart" class="restart">Restart over the river</button
+        ><button id="switch-mode" class="restart">Start a dogfight</button>
+      </div>
     </dialog>
     <script>
       "use strict";
-      // A repeating district of the old Chao Phraya waterfront. Each pixel stores both
-      // paint and height, so the same roofs, spires and quays appear in all three views.
-      function createWorldRenderer() {
-        const size = 1024,
-          mask = size - 1,
-          count = size * size;
-        const index = (x, y) => ((y & mask) << 10) | (x & mask);
-        const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
-        const turn = Math.PI * 2;
-        const landmarks = [
-          { name: "Wat Arun", x: -92, y: -24 },
-          { name: "Wat Pho", x: 107, y: -48 },
-          { name: "Grand Palace", x: 128, y: -183 },
-        ];
-        let seed = 194085;
-        function random() {
-          seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
-          return seed / 4294967296;
-        }
-        const range = (a, b) => Math.floor(a + random() * (b - a + 1));
-        const pick = (list) => list[Math.floor(random() * list.length)];
-        const rgb = [];
-        function pigment(hex) {
-          rgb.push([
-            parseInt(hex.slice(0, 2), 16),
-            parseInt(hex.slice(2, 4), 16),
-            parseInt(hex.slice(4, 6), 16),
-          ]);
-          return rgb.length - 1;
-        }
-        const colors = (s) => s.split(" ").map(pigment);
-        const water = colors("456d69 4c7771 547c72 5a8274 618779 6e8f7e 829b80 96a989 b4bda0 ced0aa");
-        const soil = colors("879264 93a070 9ca575 a6aa7c b3aa7f");
-        const street = colors("b4a58a c4b498 d0c09d 9a957d d9caaa");
-        const bark = colors("514938 716247 9d8055 b79966");
-        const tree = colors("304e42 41654b 507551 608953 749958 8da75f a8b772");
-        const roofColors = [
-          colors("744c3e 97614a b87b55 ce9469"),
-          colors("7b493c 9d5542 ba6b4a cd8256"),
-          colors("686957 808471 9b9d81 b0ad8c"),
-          colors("6a5843 8a7052 a98b63 bba074"),
-          colors("716458 8f7d69 a8947c c1aa8c"),
-        ];
-        const stone = colors("7f8174 989a88 b3b3a0 d2cbb2 e5ddc4 f1e9d2 fbf4db");
-        const gold = colors("886733 a6833b be9746 deb758 f3d47a ffe6a2");
-        const tile = colors("654739 8b4f3b a85c3d c67548 de9257");
-        const emerald = colors("2f5d4d 3f7657 508a61 689d6c");
-        const blue = colors("366c70 52878a 6a9da1");
-        const court = colors("b9a782 c8b691 d7c5a0 e0d1ad");
+      // A compressed, north-up map of the central Chao Phraya. Coordinates stay
+      // absolute, so each landmark appears once wherever the pilot travels.
+      function createBangkokCity({ pigment, mats }) {
+        const palette = (hexes) => hexes.split(" ").map(pigment);
+        const paving = palette("989c97 b7b5a8 c6c4ae ded4b8 ebe0c6 f1e8d6");
+        const glass = palette("28545e 42727d 628e97 81a6aa 99bec0 b5d1ce d4ded0");
+        const silver = palette("75838a 929da0 a8b4b0 bac5bf cad0c5 d9daca edebd9");
+        const blue = palette("284957 385c6f 517a8f 6996a9 88b2c0 aac7c6");
+        const gold = palette("856940 ad894f c9a35d e0bd70 f2d895 fbe7b7");
+        const deep = palette("3d494c 536164 697376 7f8987");
+        const pool = palette("377d8d 45a4b2 74c6c3 b0dad2");
+        const leafy = palette("36594e 527958 71965d 94a769");
+        const brick = palette("8f5948 b67153 d68b61 e6b075");
+        const red = pigment("bb5344"),
+          white = pigment("e5e6db"),
+          navy = pigment("2a456a");
+        const marks = palette("e3d9bb e5bb61 cfd7cd"),
+          asphalt = palette("555e63 657075 777d7b");
+        const riverGlints = palette("9daea6 b9c5b5 d4d6b7");
+        const commands = new Map();
+        let paintOrder = 0;
+        const cell = 128;
+        const cellKey = (x, y) => x + "," + y;
+        const landmarks = [];
+        const landmark = (name, x, y) => landmarks.push({ name, x, y });
+        const spawn = { x: 20, y: 100, heading: -2.02 };
 
-        function packed(r, g, b) {
-          return ((255 << 24) | (b << 16) | (g << 8) | r) >>> 0;
-        }
-        const palette = rgb.map((c) => packed(...c));
-        const shadePixel = (c, k) => packed(Math.round(c[0] * k), Math.round(c[1] * k), Math.round(c[2] * k));
-        const shadePalette = rgb.map((c) => shadePixel(c, 0.76));
-        const wallPalette = rgb.map((c) => shadePixel(c, 0.81));
-        const paint = new Uint8Array(count),
-          relief = new Uint8Array(count);
-        const riverMask = new Uint8Array(count);
-        const material = new Uint8Array(count);
-        const HOUSE = 1,
-          TREE = 2,
-          PRANG = 3,
-          CHEDI = 4,
-          HALL = 5,
-          BOAT = 6;
-        const basePaint = new Uint8Array(count),
-          baseHeight = new Uint8Array(count);
-
-        // A city block is a mix of street-front shophouses, timber dwellings and
-        // planted courtyards. The street grid bends around the river when sampled.
-        for (let y = 0; y < size; y++)
-          for (let x = 0; x < size; x++) {
-            const i = index(x, y),
-              u = x % 64,
-              v = y % 64;
-            const laneX = (x & 127) < 5,
-              laneY = (y & 127) < 5;
-            if (u < 3 || v < 3 || laneX || laneY) {
-              basePaint[i] = u === 0 || v === 0 ? street[0] : random() < 0.1 ? street[2] : street[1];
-            } else
-              basePaint[i] =
-                soil[
-                  (random() < 0.105 ? 2 : 1) + ((Math.floor(x / 64) + Math.floor(y / 64)) % 4 === 0 ? 1 : 0)
-                ];
-            baseHeight[i] = 2;
-          }
-        function house(x, y, w, h, transpose, palette) {
-          const across = w < h ? w : h;
-          const high = range(2, 4),
-            darkEdge = range(0, 3);
-          for (let v = 0; v < h; v++)
-            for (let u = 0; u < w; u++) {
-              const i = transpose ? index(y + v, x + u) : index(x + u, y + v);
-              const side = w < h ? u : v;
-              const ramp = 1 - Math.abs((2 * (side + 0.5)) / across - 1);
-              const hip = Math.min(ramp, (1 + Math.min(u, v, w - u - 1, h - v - 1)) * 0.6);
-              const ridge = Math.abs(2 * side - across + 1) < 1.7;
-              let tone = side < across * 0.5 ? 2 : 1;
-              if (ridge) tone = 3;
-              if ((v + u * 2 + darkEdge) % 13 === 0 && !ridge) tone = Math.max(0, tone - 1);
-              basePaint[i] = palette[tone];
-              baseHeight[i] = 2 + high + Math.round(hip * 2.5);
-              if (v === h - 1) basePaint[i] = palette[0];
-            }
-        }
-        for (let by = 0; by < size; by += 64)
-          for (let bx = 0; bx < size; bx += 64) {
-            const transpose = random() < 0.46,
-              dense = random() > 0.19;
-            for (let row = 0; row < 3; row++) {
-              let offset = range(5, 8);
-              const line = 5 + row * 19 + range(0, 2),
-                tint = pick(roofColors);
-              while (offset < 57) {
-                const w = Math.min(62 - offset, range(5, 12)),
-                  h = range(8, 16);
-                if (dense ? random() < 0.87 : random() < 0.36) {
-                  const x = transpose ? by : bx,
-                    y = transpose ? bx : by;
-                  house(x + offset, y + line, w, h, transpose, random() < 0.66 ? tint : pick(roofColors));
-                }
-                offset += w + range(1, dense ? 4 : 8);
+        // Each stamp is indexed once. Tiles clip it in world space, so quays, roads
+        // and buildings crossing a chunk boundary retain their uninterrupted outline.
+        function stamp(cx, cy, hx, hy, angle, paint) {
+          const c = Math.cos(angle),
+            s = Math.sin(angle);
+          const ex = Math.abs(c) * hx + Math.abs(s) * hy,
+            ey = Math.abs(s) * hx + Math.abs(c) * hy;
+          const left = Math.floor(cx - ex - 1),
+            right = Math.ceil(cx + ex + 1);
+          const top = Math.floor(cy - ey - 1),
+            bottom = Math.ceil(cy + ey + 1);
+          const command = (tile) => {
+            const yEnd = Math.min(bottom, tile.y + tile.size - 1),
+              xEnd = Math.min(right, tile.x + tile.size - 1);
+            for (let y = Math.max(tile.y, top); y <= yEnd; y++) {
+              for (let x = Math.max(tile.x, left); x <= xEnd; x++) {
+                const dx = x - cx,
+                  dy = y - cy,
+                  u = dx * c + dy * s,
+                  v = dy * c - dx * s;
+                if (Math.abs(u) <= hx && Math.abs(v) <= hy) paint(tile, x, y, u, v);
               }
             }
-          }
-        function riverCentre(y) {
-          const a = (y * turn) / size;
-          return 73 * Math.sin(a) + 36 * Math.sin(2 * a) - 21 * Math.sin(3 * a);
+          };
+          command.order = paintOrder++;
+          for (let j = Math.floor(top / cell); j <= Math.floor(bottom / cell); j++)
+            for (let i = Math.floor(left / cell); i <= Math.floor(right / cell); i++) {
+              const key = cellKey(i, j);
+              if (!commands.has(key)) commands.set(key, []);
+              commands.get(key).push(command);
+            }
+        }
+        function slab(x, y, rx, ry, color, z, kind, angle = 0) {
+          stamp(x, y, rx, ry, angle, (tile, wx, wy) => tile.put(wx, wy, color, z, kind));
+        }
+        function ellipse(x, y, rx, ry, color, z, kind) {
+          stamp(x, y, rx, ry, 0, (tile, wx, wy, u, v) => {
+            if ((u / rx) ** 2 + (v / ry) ** 2 <= 1) tile.put(wx, wy, color, z, kind);
+          });
+        }
+        const control = [
+          [-2400, -750],
+          [-1990, -811],
+          [-1750, -910],
+          [-1540, -735],
+          [-1310, -671],
+          [-1110, -760],
+          [-890, -606],
+          [-715, -315],
+          [-560, -198],
+          [-390, -81],
+          [-235, -2],
+          [-116, -5],
+          [0, 0],
+          [150, 18],
+          [285, 25],
+          [545, 2],
+          [780, -91],
+          [1050, -119],
+          [1300, -37],
+          [1620, 82],
+          [2050, 293],
+          [2480, 307],
+          [3100, 182],
+          [3700, 310],
+        ];
+        function extendedRiver(y) {
+          return 400 * Math.sin(y / 935 + 0.13) + 179 * Math.sin(y / 577 + 0.85) + 53 * Math.sin(y / 245);
+        }
+        function riverX(y) {
+          const first = control[0],
+            last = control[control.length - 1];
+          if (y < first[0]) return first[1] + extendedRiver(y) - extendedRiver(first[0]);
+          if (y > last[0]) return last[1] + extendedRiver(y) - extendedRiver(last[0]);
+          let i = 0;
+          while (i < control.length - 2 && y > control[i + 1][0]) i++;
+          const a = control[i],
+            b = control[i + 1],
+            p = control[Math.max(0, i - 1)],
+            q = control[Math.min(control.length - 1, i + 2)];
+          const span = b[0] - a[0],
+            t = (y - a[0]) / span,
+            t2 = t * t,
+            t3 = t2 * t;
+          const ma = ((b[1] - p[1]) / (b[0] - p[0])) * span;
+          const mb = ((q[1] - a[1]) / (q[0] - a[0])) * span;
+          return (
+            (2 * t3 - 3 * t2 + 1) * a[1] + (t3 - 2 * t2 + t) * ma + (-2 * t3 + 3 * t2) * b[1] + (t3 - t2) * mb
+          );
         }
         function riverHalfWidth(y) {
-          return 54 + 7 * Math.sin((y * turn) / size + 0.8) + 3 * Math.sin((y * turn * 3) / size);
-        }
-        const xWarp = [],
-          yWarp = [];
-        for (let n = 0; n < size; n++) {
-          xWarp[n] = Math.round(28 * Math.sin((n * turn) / size) + 8 * Math.sin((2 * n * turn) / size + 0.5));
-          yWarp[n] = Math.round(22 * Math.sin((n * turn) / size + 0.55) + 4 * Math.sin((3 * n * turn) / size));
-        }
-        for (let y = -512; y < 512; y++) {
-          const center = riverCentre(y),
-            half = riverHalfWidth(y);
-          const moatX = 218 + 12 * Math.sin((y + 55) * 0.014);
-          for (let x = -512; x < 512; x++) {
-            const i = index(x, y),
-              u = x - xWarp[y & mask],
-              v = y + yWarp[x & mask];
-            const source = index(u, v),
-              dx = x - center;
-            const bankDistance = Math.abs(dx) - half;
-            // Canals lead inland from the west bank and skirt the old royal city.
-            let canal = 100;
-            if (dx < 0)
-              canal = Math.min(
-                Math.abs(y - 153 - 17 * Math.sin(x * 0.017)) - 5.6,
-                Math.abs(y + 152 - 14 * Math.sin(x * 0.021)) - 5,
-                Math.abs(x + 288 + 22 * Math.sin(y * 0.017)) - 4,
-              );
-            else if (y > -314 && y < 134 && x <= moatX + 6) {
-              canal = Math.min(
-                Math.abs(x - moatX) - 4.3,
-                Math.abs(y + 305 + 6 * Math.sin(0.018 * x)) - 4.6,
-                Math.abs(y - 120 - 6 * Math.sin(0.023 * x)) - 4.6,
-              );
-            }
-            const shore = Math.min(bankDistance, canal);
-            if (shore < 0) {
-              const wave =
-                0.8 * Math.sin(x * 0.083 + 1.65 * Math.sin(y * 0.064)) + 0.43 * Math.sin(x * 0.14 + y * 0.041);
-              const shallow = Math.max(0, 1 + shore / 10);
-              const color = Math.round(2.5 + wave * 0.85 + shallow * 2 + random() * 0.3);
-              paint[i] = water[color];
-              relief[i] = 0;
-              riverMask[i] = 1;
-              if (canal < 0 && bankDistance > 8 && ((u & 127) < 4 || (v & 127) < 4)) {
-                paint[i] = bark[(v + u) % 3 === 0 ? 2 : 1];
-                relief[i] = 3;
-                riverMask[i] = 0;
-              }
-            } else if (shore < 2.5) {
-              paint[i] = shore < 1 ? bark[1] : random() < 0.28 ? soil[1] : soil[4];
-              relief[i] = 2;
-            } else {
-              paint[i] = basePaint[source];
-              relief[i] = baseHeight[source];
-              if (bankDistance < 7 && canal > 3) {
-                paint[i] = random() < 0.16 ? street[0] : street[1];
-                relief[i] = 2;
-              }
-            }
-          }
+          const bank = 60 + 8 * Math.sin(y / 160 + 0.8) + 5 * Math.sin(y / 489) + 4 * Math.cos(y / 93);
+          return bank + Math.min(325, Math.max(0, (y - 7200) * 0.059));
         }
 
-        // Tree crowns have overlapping lights, shade and a small broken rim.
-        function crown(x, y, r) {
-          if (relief[index(x, y)] > 3 || riverMask[index(x, y)]) return;
-          const tint = range(0, 1),
-            h = range(4, 7);
-          for (let dy = -r; dy <= r; dy++)
-            for (let dx = -r; dx <= r; dx++) {
-              const i = index(x + dx, y + dy);
-              const distance = (dx * dx + dy * dy * 0.92) / (r * r);
-              if (distance > 1 || riverMask[i] || relief[i] > h + 6) continue;
-              const light = (1 - distance) * 0.48 - (dx * 0.65 + dy * 0.55) / r + random() * 0.2;
-              const leaf = clamp(Math.round(2.7 + light * 2.25) + tint, 0, 6);
-              paint[i] = tree[leaf];
-              relief[i] = Math.max(relief[i], Math.round(3 + Math.sqrt(1 - distance) * (h + r * 0.69)));
-            }
-        }
-        for (let n = 0; n < 12500; n++) {
-          const x = range(-512, 511),
-            y = range(-512, 511),
-            i = index(x, y);
-          if (paint[i] < soil[0] || paint[i] > soil[4]) continue;
-          crown(x, y, range(2, 6));
-        }
-
-        // Stamps share the palette/height field with the streets. Facing north in the
-        // overhead view, the western bank (negative X) is always on the left.
-        function stamp(cx, cy, hw, hh, a, visit) {
-          const cos = Math.cos(a),
-            sin = Math.sin(a);
-          const bx = Math.ceil(Math.abs(hw * cos) + Math.abs(hh * sin));
-          const by = Math.ceil(Math.abs(hw * sin) + Math.abs(hh * cos));
-          for (let dy = -by; dy <= by; dy++)
-            for (let dx = -bx; dx <= bx; dx++) {
-              const u = dx * cos + dy * sin,
-                v = dy * cos - dx * sin;
-              if (Math.abs(u) <= hw && Math.abs(v) <= hh) visit(index(cx + dx, cy + dy), u, v);
-            }
-        }
-        function set(i, c, z) {
-          paint[i] = c;
-          relief[i] = Math.round(z);
-          riverMask[i] = 0;
-        }
-        function compound(x, y, hw, hh, a) {
-          stamp(x, y, hw, hh, a, (i, u, v) => {
-            if (riverMask[i]) return;
-            const edge = Math.min(hw - Math.abs(u), hh - Math.abs(v));
-            if (edge < 1.45) {
-              const merlon = (Math.floor((u + v + 250) / 3) & 1) === 0;
-              set(i, merlon ? stone[5] : stone[3], merlon ? 6 : 4);
-            } else {
-              const paving = (Math.floor(u / 6) + Math.floor(v / 6)) % 4 === 0;
-              set(i, court[paving ? 2 : 1], 2);
-            }
+        function tree(cx, cy, r) {
+          stamp(cx, cy, r, r, 0, (tile, x, y, u, v) => {
+            const d = (u * u + v * v) / (r * r);
+            if (d > 1) return;
+            const z = 4 + r * Math.sqrt(1 - d),
+              lit = (-u - v) / (2 * r);
+            const c = lit > 0.23 ? 3 : lit > -0.03 ? 2 : lit > -0.36 ? 1 : 0;
+            tile.put(x, y, leafy[c], z, mats.TREE);
           });
         }
-        function templeHall(x, y, hw, hh, angle, greenRoof = false) {
-          // Nested Thai gables, gold bargeboards and small upswept ridge finials.
-          const reds = greenRoof ? emerald : tile;
-          stamp(x, y, hw + 2, hh + 2, angle, (i, u, v) => {
-            const across = Math.abs(u),
-              along = Math.abs(v);
-            if (across > hw || along > hh) {
-              set(i, stone[3], 4);
+        function road(x1, y1, x2, y2, halfWidth, elevated = false) {
+          const dx = x2 - x1,
+            dy = y2 - y1,
+            len = Math.hypot(dx, dy),
+            angle = Math.atan2(dy, dx);
+          const base = elevated ? 12 : 3;
+          stamp((x1 + x2) / 2, (y1 + y2) / 2, len / 2, halfWidth, angle, (tile, x, y, u, v) => {
+            const lane = Math.abs(v),
+              edge = halfWidth - lane;
+            let color = asphalt[1],
+              z = base;
+            if (edge < 1.2) {
+              color = elevated ? silver[5] : paving[1];
+              z += 1;
+            } else if (edge < 2.1) color = marks[0];
+            else if (lane < 0.8) color = marks[1];
+            else if (Math.abs(lane - halfWidth * 0.55) < 0.55 && Math.floor((u + len / 2) / 5) % 3 !== 0)
+              color = marks[2];
+            tile.put(x, y, color, z, elevated ? mats.CONCRETE : mats.ROAD);
+          });
+        }
+        function car(cx, cy, length, width, color, z, angle) {
+          stamp(cx, cy, length / 2, width / 2, angle, (tile, x, y, u, v) => {
+            const front = u > length * 0.1 && u < length * 0.32;
+            tile.put(x, y, front ? blue[1] : color, z + 1, mats.STEEL);
+          });
+        }
+        function track(x1, y1, x2, y2, station = false) {
+          const dx = x2 - x1,
+            dy = y2 - y1,
+            len = Math.hypot(dx, dy),
+            angle = Math.atan2(dy, dx);
+          stamp((x1 + x2) / 2, (y1 + y2) / 2, len / 2, station ? 7 : 3.5, angle, (tile, x, y, u, v) => {
+            const side = Math.abs(v);
+            const edge = side > 2.9,
+              rail = Math.abs(side - 1.5) < 0.6;
+            let color = edge ? silver[3] : rail ? white : Math.floor(u / 3) % 2 ? deep[0] : deep[1];
+            if (station && side > 3.5) color = side < 4.8 ? marks[1] : paving[3];
+            tile.put(x, y, color, station ? 17 : 16, mats.CONCRETE);
+          });
+        }
+        function train(cx, cy, segments, angle) {
+          const c = Math.cos(angle),
+            s = Math.sin(angle);
+          for (let i = 0; i < segments; i++) {
+            const dist = (i - (segments - 1) / 2) * 9.2;
+            stamp(cx + dist * c, cy + dist * s, 4.3, 1.8, angle, (tile, x, y, u, v) => {
+              let color = Math.abs(v) > 1.1 ? (v > 0 ? navy : red) : white;
+              if (Math.abs(u) < 1.1 && Math.abs(v) < 1) color = silver[1];
+              if (i === segments - 1 && u > 2.7) color = blue[1];
+              tile.put(x, y, color, 20, mats.STEEL);
+            });
+          }
+        }
+        function terrace(cx, cy, hx, hy, z, a = 0) {
+          stamp(cx, cy, hx, hy, a, (tile, x, y, u, v) => {
+            const border = Math.min(hx - Math.abs(u), hy - Math.abs(v));
+            const seam = Math.floor(u + hx) % 9 === 0 || Math.floor(v + hy) % 9 === 0;
+            tile.put(x, y, border < 1.4 ? paving[4] : seam ? paving[1] : paving[2], z, mats.CONCRETE);
+          });
+        }
+        function poolDeck(x, y, rx, ry, z, a = 0) {
+          slab(x, y, rx + 2, ry + 2, paving[4], z, mats.CONCRETE, a);
+          stamp(x, y, rx, ry, a, (tile, wx, wy, u, v) => {
+            const shallow = Math.min(rx - Math.abs(u), ry - Math.abs(v)) < 1.5;
+            const ripples = Math.cos(u * 1.2 + v * 0.45) > 0.88;
+            tile.put(wx, wy, shallow ? pool[3] : ripples ? pool[2] : pool[1], z + 0.5, mats.GLASS);
+          });
+        }
+        function tower(cx, cy, rx, ry, z, scheme, angle = 0, kind = mats.GLASS) {
+          const chamfer = Math.min(rx, ry) * 0.36;
+          stamp(cx, cy, rx, ry, angle, (tile, x, y, u, v) => {
+            const edge = Math.min(
+              rx - Math.abs(u),
+              ry - Math.abs(v),
+              (rx + ry - chamfer - Math.abs(u) - Math.abs(v)) * 0.7,
+            );
+            if (edge < 0) return;
+            let tone = edge < 1.1 ? (u + v > 0 ? 3 : scheme.length - 1) : edge < 2.2 ? 1 : 3;
+            const service = Math.abs(u) < rx * 0.43 && Math.abs(v) < ry * 0.52;
+            if (service) tone = Math.floor((u + 90) / 2) % 3 ? 2 : 1;
+            tile.put(x, y, scheme[tone], z + (edge < 1.1 ? 1 : service ? 4 : 0), kind);
+          });
+        }
+        function crown(cx, cy, rx, ry, z, scheme, angle = 0) {
+          stamp(cx, cy, rx, ry, angle, (tile, x, y, u, v) => {
+            const d = (u / rx) ** 2 + (v / ry) ** 2;
+            if (d > 1) return;
+            const dome = Math.sqrt(1 - d),
+              ribs = Math.cos(Math.atan2(v, u) * 14);
+            const lit = Math.min(
+              scheme.length - 1,
+              Math.max(0, Math.round(2.5 - (0.85 * u) / rx - v / ry + dome * 0.7 + (ribs > 0.82 ? 0.6 : 0))),
+            );
+            tile.put(x, y, scheme[lit], z + dome * rx * 0.87, mats.STEEL);
+          });
+        }
+
+        // Taksin Bridge carries road traffic and the Silom Line across the water.
+        // Saphan Taksin station and the connecting river ferries sit on its east end.
+        road(-610, 268, -208, 225, 10);
+        road(-208, 225, 132, 211, 11, true);
+        road(132, 211, 445, 184, 10);
+        road(445, 184, 810, 153, 10);
+        const corridor = [
+          [-610, 268],
+          [-208, 225],
+          [134, 211],
+          [280, 201],
+          [453, 199],
+          [552, 198],
+          [631, 180],
+          [660, 118],
+          [666, -50],
+        ];
+        for (let i = 1; i < corridor.length; i++) track(...corridor[i - 1], ...corridor[i]);
+        track(95, 212, 170, 209, true);
+        slab(134, 210, 28, 5.5, silver[5], 22, mats.STEEL, -0.04);
+        slab(134, 210, 23, 2.4, glass[2], 23, mats.GLASS, -0.04);
+        track(649, 145, 659, 110, true);
+        train(-10, 217, 4, -0.04);
+        train(487, 198, 3, -0.01);
+        car(-86, 225, 5, 2.4, red, 13, -0.04);
+        car(45, 210, 5, 2.4, marks[1], 13, -0.04);
+        car(75, 222, 6, 2.5, white, 13, -0.04);
+        landmark("Taksin Bridge", 6, 221);
+        function dock(x, y, direction) {
+          slab(x + direction * 10, y, 12, 1.5, paving[3], 3, mats.STEEL);
+          slab(x + direction * 20, y, 3.4, 11, paving[2], 2, mats.STEEL);
+          slab(x + direction * 20, y - 1, 2.6, 6, glass[3], 5, mats.GLASS);
+        }
+        terrace(100, 191, 15, 12, 3);
+        dock(89, 189, -1);
+        dock(88, 174, -1);
+        slab(101, 184, 9, 4, blue[3], 7, mats.STEEL);
+        landmark("Sathon Pier", 87, 179);
+
+        // ICONSIAM's faceted river frontage and gold-edged terraces. The two
+        // residential towers rise above a continuous, publicly accessible podium.
+        const mallX = -137,
+          mallY = -37;
+        stamp(mallX, mallY, 64, 62, -0.04, (tile, x, y, u, v) => {
+          const bank = riverX(y) - riverHalfWidth(y);
+          if (x > bank + 1) return;
+          const p = Math.floor((u + 70) / 6) + Math.floor((v + 62) / 6);
+          tile.put(x, y, p % 4 === 0 ? paving[3] : paving[2], 3, mats.CONCRETE);
+        });
+        // A folded glass curtain catches alternating blue/teal and warm reflections.
+        stamp(mallX - 1, mallY - 3, 58, 55, -0.05, (tile, x, y, u, v) => {
+          const frontage = 42 + 10 * Math.cos(v * 0.048) + 3 * Math.sin(v * 0.16);
+          if (u > frontage || Math.abs(v) > 53 - Math.max(0, Math.abs(u) - 35) * 0.4) return;
+          const rim = frontage - u;
+          const fold = (v + 62) % 13,
+            roofZone = Math.floor((u + 66) / 14) + Math.floor((v + 64) / 17);
+          let color = silver[(roofZone % 3) + 2],
+            height = 15;
+          if (rim < 3) {
+            color = gold[4];
+            height = 12;
+          } else if (rim < 12) {
+            color = fold < 3 ? gold[2] : fold < 7 ? glass[2] : glass[4];
+            height = 13 + (rim - 3) * 0.24;
+          } else if (rim < 14) {
+            color = gold[3];
+            height = 16;
+          } else if (rim < 21) {
+            color = paving[(roofZone % 2) + 2];
+            height = 16;
+          } else if (rim < 24) {
+            color = leafy[2];
+            height = 18;
+          } else if (Math.abs(v) < 18 && u > -26) {
+            color = fold < 3 ? silver[4] : glass[(roofZone % 2) + 2];
+            height = 20;
+          }
+          if (u < -38 && Math.floor(v + 55) % 11 < 2) color = silver[1];
+          tile.put(x, y, color, height, rim < 12 ? mats.GLASS : mats.CONCRETE);
+        });
+        for (const [x, y, rx, ry] of [
+          [-167, -63, 9, 5],
+          [-157, -48, 6, 2],
+          [-154, -3, 14, 7],
+          [-180, -24, 6, 10],
+        ]) {
+          slab(x, y, rx, ry, silver[3], 18, mats.STEEL, -0.05);
+          for (let i = -rx + 2; i <= rx - 2; i += 4) slab(x + i, y, 1, ry - 1, deep[2], 19, mats.STEEL, -0.05);
+        }
+        for (let y = -78; y < 19; y += 9) {
+          const bank = riverX(y) - riverHalfWidth(y);
+          tree(Math.round(bank - 5), y, 2.2);
+          if (y % 2 === 0) ellipse(bank - 12, y, 2.5, 2, pool[2], 4, mats.GLASS);
+        }
+        dock(-69, -36, 1);
+        dock(-70, -63, 1);
+        terrace(-129, 28, 38, 18, 8, -0.09);
+        poolDeck(-115, 33, 10, 3.1, 9, -0.09);
+        tower(-135, 21, 13, 16, 126, glass, -0.1);
+        tower(-135, 21, 7, 12, 131, silver, -0.1, mats.GLASS);
+        tower(-158, 45, 11, 14, 99, silver, -0.14, mats.CONCRETE);
+        tower(-158, 45, 6, 10, 104, glass, -0.14);
+        landmark("ICONSIAM", -110, -30);
+
+        // Riverfront hotels and the gold dome of State Tower in Bang Rak.
+        terrace(118, 63, 40, 27, 5, -0.12);
+        tower(133, 52, 12, 25, 55, silver, -0.12, mats.CONCRETE);
+        poolDeck(97, 69, 8, 3.5, 7, -0.12);
+        tree(94, 47, 4);
+        tree(102, 87, 3);
+        tree(111, 41, 3);
+        terrace(170, 129, 25, 24, 5, -0.08);
+        tower(170, 127, 18, 18, 75, paving, -0.08, mats.CONCRETE);
+        tower(170, 126, 15, 13, 83, silver, -0.08, mats.CONCRETE);
+        ellipse(170, 125, 9, 9, paving[4], 89, mats.CONCRETE);
+        crown(170, 125, 8, 8, 91, gold);
+        ellipse(170, 125, 1.2, 1.2, gold[5], 101, mats.STEEL);
+        landmark("State Tower", 170, 129);
+        terrace(107, -52, 20, 26, 7, 0.13);
+        tower(115, -57, 10, 16, 42, paving, 0.13, mats.CONCRETE);
+        poolDeck(96, -49, 4, 7, 8, 0.13);
+        tree(90, -68, 3.7);
+        tree(86, -30, 3.4);
+
+        // The pixel-cut crown of Mahanakhon. Stepped terraces remove successive
+        // corner cells from the roof and carry the broken silhouette down the walls.
+        terrace(624, 118, 38, 36, 4, 0.13);
+        tower(607, 132, 15, 11, 18, glass, 0.13);
+        stamp(628, 112, 17, 18, 0.13, (tile, x, y, u, v) => {
+          const xx = Math.floor((u + 17) / 4),
+            yy = Math.floor((v + 18) / 4);
+          let height = 137,
+            color = blue[3];
+          if (xx + yy < 6) {
+            height = 78 + 6 * (xx + yy);
+            color = blue[((xx + 2 * yy) % 3) + 1];
+          } else if (xx < 3 && yy >= 6) {
+            height = 115 - (yy - 6) * 9 + 4 * xx;
+            color = glass[2];
+          } else if (yy < 3 && xx > 5) {
+            height = 110 - (xx - 5) * 10 + yy * 4;
+            color = glass[3];
+          } else if (xx > 5 && yy > 5) {
+            height = 131 - 5 * (xx + yy - 11);
+            color = blue[2];
+          } else if (Math.abs(u) > 15 || Math.abs(v) > 16) color = blue[1];
+          else if (Math.floor(u + 17) % 4 === 0 || Math.floor(v + 18) % 4 === 0) color = blue[4];
+          tile.put(x, y, color, height, mats.GLASS);
+        });
+        slab(630, 111, 6, 7, blue[1], 140, mats.GLASS, 0.13);
+        slab(630, 111, 4, 4, silver[3], 142, mats.STEEL, 0.13);
+        slab(627, 100, 5, 2, glass[5], 133, mats.GLASS, 0.13);
+        landmark("King Power Mahanakhon", 628, 112);
+
+        function ferry(cx, cy, length, angle, accent) {
+          const hw = length * 0.17;
+          stamp(cx, cy, hw + 1, length * 0.5 + 2, angle, (tile, x, y, u, v) => {
+            const t = v / (length * 0.5),
+              beam = hw * Math.max(0, 1 - Math.abs(t) ** 3);
+            if (Math.abs(u) > beam) {
+              if (v > length * 0.25 && Math.abs(u) < beam + 1.1) tile.put(x, y, riverGlints[1], 0, 0);
               return;
             }
-            const topTier = across < hw * 0.59 && along < hh * 0.72;
-            const width = topTier ? hw * 0.59 : hw;
-            const length = topTier ? hh * 0.72 : hh;
-            const slope = 1 - across / width;
-            const tip = clamp((along / length - 0.8) * 4.4, 0, 1);
-            const z = 9 + (topTier ? 5 : 0) + slope * 6 + tip * slope * 3;
-            const eave = width - across < 1.0,
-              gable = length - along < 1.1;
-            let color = reds[u < 0 ? reds.length - 2 : 1];
-            if (Math.floor(v + hh) % 5 === 0 && u > 0) color = reds[0];
-            if (slope < 0.23 && !topTier) color = emerald[u < 0 ? 2 : 1];
-            if (eave || gable || across < 1.1) color = gold[u < 0.5 ? 4 : 2];
-            set(i, color, z + (across < 1.0 ? 2 : 0));
-            material[i] = HALL;
+            let z = 1,
+              color = white;
+            if (Math.abs(u) > beam - 1) color = accent;
+            else if (t > -0.65 && t < 0.56 && Math.abs(u) < beam - 1) {
+              z = 3;
+              color = Math.floor((v + length) / 3) % 4 === 0 ? silver[1] : silver[5];
+              if (t < -0.43) color = glass[1];
+            }
+            tile.put(x, y, color, z, mats.BOAT);
           });
         }
-        function spire(cx, cy, r, height, kind, body = stone) {
-          // A fluted Khmer-style prang bulges above stepped terraces. The chedi
-          // profile has a broad bell and a stack of gold rings under its needle.
-          for (let dy = -r; dy <= r; dy++)
-            for (let dx = -r; dx <= r; dx++) {
-              const ax = Math.abs(dx) / r,
-                ay = Math.abs(dy) / r;
-              const p = Math.max(ax, ay) * 0.71 + Math.hypot(ax, ay) * 0.29;
-              if (p > 1) continue;
-              let fraction;
-              if (kind === "prang") {
-                if (p > 0.72) fraction = 0.1 + Math.floor((1 - p) * 13) * 0.038;
-                else if (p > 0.46) fraction = 0.28 + Math.floor((0.72 - p) * 15) * 0.047;
-                else if (p > 0.14) fraction = 0.51 + Math.sqrt(Math.max(0, 1 - (p / 0.48) ** 2)) * 0.36;
-                else fraction = 0.87 + (0.14 - p) * 0.93;
-              } else {
-                if (p > 0.68) fraction = 0.12 + Math.floor((1 - p) * 12) * 0.043;
-                else if (p > 0.25) fraction = 0.28 + (0.68 - p) * 0.61;
-                else fraction = 0.55 + (0.25 - p) * 1.8;
+        for (const [y, offset, len, col] of [
+          [-173, -26, 20, navy],
+          [-83, 16, 16, red],
+          [-18, -34, 13, marks[1]],
+          [54, 33, 17, navy],
+          [135, -25, 12, red],
+          [277, 14, 23, navy],
+          [430, 37, 17, red],
+          [-470, -6, 19, navy],
+          [-802, 5, 21, marks[1]],
+          [-1130, -8, 15, red],
+        ]) {
+          const angle = -Math.atan2(riverX(y + 5) - riverX(y - 5), 10);
+          ferry(riverX(y) + offset, y, len, angle, col);
+        }
+
+        // Historic compounds still punctuate the present-day city upriver.
+        function court(x, y, rx, ry) {
+          stamp(x, y, rx, ry, 0, (tile, wx, wy, u, v) => {
+            const edge = Math.min(rx - Math.abs(u), ry - Math.abs(v));
+            const wall = edge < 2.2;
+            tile.put(
+              wx,
+              wy,
+              wall
+                ? paving[5]
+                : paving[(Math.floor((u + rx) / 6) + Math.floor((v + ry) / 7)) % 4 === 0 ? 3 : 2],
+              wall ? 4 + ((Math.floor((u + v + 250) / 3) & 1) === 0 ? 1 : 0) : 2,
+              mats.CONCRETE,
+            );
+          });
+        }
+        function templeHall(x, y, rx, ry, angle, greenRoof) {
+          const color = greenRoof ? leafy : brick;
+          stamp(x, y, rx, ry, angle, (tile, wx, wy, u, v) => {
+            const high = Math.abs(v) < ry * 0.72 && Math.abs(u) < rx * 0.62;
+            const half = high ? rx * 0.62 : rx,
+              len = high ? ry * 0.72 : ry;
+            const slope = 1 - Math.abs(u) / half,
+              tip = Math.max(0, Math.abs(v) / len - 0.8) * 4.4;
+            const eave = half - Math.abs(u) < 1.0 || len - Math.abs(v) < 1.15;
+            const roof = eave || Math.abs(u) < 1 ? gold[4] : color[u < 0 ? 2 : 1];
+            tile.put(wx, wy, roof, 9 + (high ? 5 : 0) + slope * (6 + tip * 4), mats.HALL);
+          });
+        }
+        function prang(x, y, r, h) {
+          stamp(x, y, r, r, 0, (tile, wx, wy, u, v) => {
+            const p = (0.68 * Math.max(Math.abs(u), Math.abs(v))) / r + (0.32 * Math.hypot(u, v)) / r;
+            if (p > 1) return;
+            const profile =
+              p > 0.7
+                ? 0.1 + Math.floor((1 - p) * 14) * 0.037
+                : p > 0.46
+                  ? 0.26 + Math.floor((0.72 - p) * 17) * 0.045
+                  : p > 0.14
+                    ? 0.5 + 0.38 * Math.sqrt(Math.max(0, 1 - (p / 0.48) ** 2))
+                    : 0.88 + (0.14 - p) * 0.85;
+            const z = 5 + h * profile;
+            const tint = Math.min(5, Math.max(1, Math.round(3.2 - (u * 0.7 + v * 0.7) / r)));
+            const color = p < 0.1 ? gold[4] : Math.floor(z + 1) % 6 === 0 ? paving[5] : silver[tint];
+            tile.put(wx, wy, color, z, mats.PRANG);
+          });
+        }
+        const ay = -1110,
+          ax = Math.round(riverX(ay) - riverHalfWidth(ay) - 40);
+        court(ax, ay, 47, 40);
+        for (const dx of [-17, 17]) for (const dy of [-16, 16]) prang(ax + dx, ay + dy, 5, 17);
+        prang(ax, ay, 13, 38);
+        templeHall(ax - 34, ay, 7, 17, -0.04, false);
+        landmark("Wat Arun", ax, ay);
+        const py = -1140,
+          px = Math.round(riverX(py) + riverHalfWidth(py) + 57);
+        court(px, py, 48, 46);
+        templeHall(px + 14, py - 1, 13, 24, 0.1, false);
+        templeHall(px - 17, py - 13, 9, 16, 0.1, true);
+        for (const [vx, vy] of [
+          [-15, 8],
+          [-6, 17],
+          [-18, 21],
+          [-7, 6],
+        ])
+          prang(px + vx, py + vy, 3, 12);
+        landmark("Wat Pho", px, py);
+        const gy = py - 137,
+          gx = Math.round(riverX(gy) + riverHalfWidth(gy) + 66);
+        court(gx, gy, 62, 64);
+        templeHall(gx - 19, gy + 9, 11, 26, 0.05, false);
+        templeHall(gx - 19, gy + 9, 24, 7, 0.05, false);
+        templeHall(gx + 20, gy - 26, 12, 17, 0.05, true);
+        prang(gx + 8, gy - 36, 6, 23);
+        landmark("Grand Palace", gx, gy);
+        return {
+          spawn,
+          landmarks,
+          riverX,
+          riverHalfWidth,
+          drawTile(tile) {
+            // The world uses 128-unit chunks; larger consumer tiles may cross bins.
+            const left = Math.floor(tile.x / cell),
+              top = Math.floor(tile.y / cell);
+            const right = Math.floor((tile.x + tile.size - 1) / cell),
+              bottom = Math.floor((tile.y + tile.size - 1) / cell);
+            if (left === right && top === bottom) {
+              const list = commands.get(cellKey(left, top));
+              if (list) for (const draw of list) draw(tile);
+            } else {
+              const needed = new Set();
+              for (let j = top; j <= bottom; j++)
+                for (let i = left; i <= right; i++)
+                  for (const draw of commands.get(cellKey(i, j)) || []) needed.add(draw);
+              for (const draw of Array.from(needed).sort((a, b) => a.order - b.order)) draw(tile);
+            }
+          },
+        };
+      }
+
+      // Local terrain is generated in absolute world coordinates. Tiles are disposable:
+      // the same district is regenerated from its coordinates when the pilot returns.
+      function createWorldRenderer() {
+        const tileSize = 128,
+          tileMask = tileSize - 1;
+        const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
+        const mats = {
+          HOUSE: 1,
+          TREE: 2,
+          GLASS: 3,
+          CONCRETE: 4,
+          PRANG: 5,
+          CHEDI: 6,
+          HALL: 7,
+          BOAT: 8,
+          ROAD: 9,
+          STEEL: 10,
+          WATER: 11,
+        };
+        const rgb = [],
+          knownColors = new Map();
+        function pigment(hex) {
+          hex = hex.replace("#", "").toLowerCase();
+          if (knownColors.has(hex)) return knownColors.get(hex);
+          const id = rgb.length;
+          rgb.push([0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16)));
+          knownColors.set(hex, id);
+          return id;
+        }
+        const ramp = (s) => s.split(" ").map(pigment);
+        const river = ramp("3b6d70 427a7c 488486 55908e 699f99 81b2a7 add2bc bfdccd");
+        const gulf = ramp("275e77 2a6780 30778a 398594 43919b 5da7a8 88bfba b2d8cc");
+        const grass = ramp("6c865f 7f9664 91a56f a0af7d aeba87");
+        const fields = ramp("759860 8dac63 aec277 83a769 b5b77e a4a774 74a389 c9ba83 99b870");
+        const asphalt = ramp("3d484f 4c5961 5d686a 697477 aab4ad d9d3a3");
+        const paving = ramp("a69881 b4ae9d c5c3ad d6d4bd e2decc");
+        const foliage = ramp("294c45 365e4b 437857 54895b 72a168 8fb277");
+        const roofs = ramp("b37b61 c28b70 b3b7b1 d8d5be a8b9b9 91a4a7 96aaa6 818b8f d5c4ab b3977d");
+        const glass = ramp("487a85 598e96 69969e 809eae 939eab 697c86 74a5a7 5e8997");
+        const concrete = ramp("abb4b0 c1c5ba d1cebb c6bda8 a7afb1 b7b5af");
+        const trailers = ramp("a55f50 b36f54 487d89 547d6b 9b9f9e 5c7090");
+        const tileRed = ramp("815043 9a5e49 b87049 cf905e e9bc76");
+        const porcelain = ramp("827f6d a7ab9a c6cbb6 dedbc2 f2ead0");
+        const canal = ramp("79968c 8fa89a 648b7e");
+        const city = createBangkokCity({ pigment, mats });
+        const turn = 2 * Math.PI;
+        let cloudSeed = 194085;
+        function random() {
+          cloudSeed = (Math.imul(cloudSeed, 1664525) + 1013904223) >>> 0;
+          return cloudSeed / 4294967296;
+        }
+
+        function hash(x, y, seed = 0) {
+          let h = Math.imul(x, 374761393) ^ Math.imul(y, 668265263) ^ Math.imul(seed, 1274126177);
+          h = Math.imul(h ^ (h >>> 13), 1274126177);
+          return (h ^ (h >>> 16)) >>> 0;
+        }
+        function stream(x, y, seed) {
+          let value = hash(x, y, seed);
+          return () => {
+            value = (Math.imul(value, 1664525) + 1013904223) >>> 0;
+            return value / 4294967296;
+          };
+        }
+        const coastAt = (x) =>
+          12900 + 680 * Math.sin(x * 0.00019 + 0.45) + 190 * Math.sin(x * 0.00078) + 77 * Math.sin(x * 0.0029);
+        function regionAt(x, y) {
+          if (y > coastAt(x)) return "Gulf of Thailand";
+          if (y > coastAt(x) - 730) return "Coastal wetlands";
+          if (y > 5800 && Math.abs(x - city.riverX(y)) < 2100) return "Samut Prakan";
+          const d = Math.hypot(x * 0.92, y * 1.02);
+          if (d > 8700) return "Central plains";
+          if (d > 4600) return "Outer Bangkok";
+          if (d > 2000) return "Greater Bangkok";
+          if (y < -750 && Math.abs(x - city.riverX(y)) < 620)
+            return x < city.riverX(y) ? "Thonburi" : "Old City";
+          if (x > 340 && x < 990 && y > -190 && y < 330) return "Silom";
+          if (x < city.riverX(y) - 45) return "Khlong San";
+          if (y > 190 && x > city.riverX(y) + 60) return "Sathon";
+          if (x > city.riverX(y) + 65) return "Bang Rak";
+          return "Chao Phraya";
+        }
+
+        const encode = (color, z, kind) => color | (z << 12) | (kind << 22);
+        const matOf = (s) => s >>> 22,
+          heightOf = (s) => (s >>> 12) & 1023;
+        const packed = (r, g, b) => (0xff000000 | (b << 16) | (g << 8) | r) >>> 0;
+        const palette = rgb.map((c) => packed(...c));
+        const shadow = rgb.map((c) => packed(...c.map((v) => Math.round(v * 0.75))));
+        const wall = rgb.map((c) => packed(...c.map((v) => Math.round(v * 0.82))));
+        // Facade patterns are tied to world height, preserving floors as the camera banks.
+        function facade(kind, id, z, top, x, y) {
+          const level = Math.max(0, Math.floor(z)),
+            across = (x + y) & 31;
+          if (kind === mats.GLASS) {
+            if (level <= 4) return asphalt[1];
+            if (level % 6 === 0) return level % 18 === 0 ? paving[2] : asphalt[2];
+            if ((across & 7) === 0) return glass[5];
+            return (across & 15) < 5 ? glass[6] : id;
+          }
+          if (kind === mats.CONCRETE) {
+            if (level < 4) return paving[0];
+            if (level % 5 <= 1) return level % 10 === 0 ? paving[3] : id;
+            return across % 5 <= 2 ? glass[across & 8 ? 0 : 2] : id;
+          }
+          if (kind === mats.PRANG) {
+            if (level > 7 && level % 5 === 0) return porcelain[1];
+            if (level > 7 && level % 5 === 1) return porcelain[4];
+            return id;
+          }
+          if (kind === mats.CHEDI && level % 4 === 0) return tileRed[4];
+          if (kind === mats.HALL && level < 8) return across % 4 === 0 ? porcelain[1] : porcelain[3];
+          if (kind === mats.HOUSE && level < top - 1)
+            return level > 3 && across % 4 < 2 ? asphalt[1] : paving[(across & 1) + 1];
+          if (kind === mats.TREE && level < top - 2) return foliage[level < 4 ? 0 : 1];
+          if (kind === mats.STEEL && level % 7 === 0) return paving[2];
+          return id;
+        }
+
+        function roadLine(n, seed) {
+          return n * 96 + (hash(n, seed) % 29) - 14;
+        }
+        // Geometry is stamped into world-aligned tiles. Blocks crossing a tile edge
+        // use the same seed from both sides, including their trees, cars and roof detail.
+        function generateTile(cx, cy) {
+          const x0 = cx * tileSize,
+            y0 = cy * tileSize;
+          const x1 = x0 + tileSize,
+            y1 = y0 + tileSize;
+          const cells = new Uint32Array(tileSize * tileSize);
+          function put(x, y, color, z = 2, kind = 0) {
+            x = Math.floor(x);
+            y = Math.floor(y);
+            if (x >= x0 && x < x1 && y >= y0 && y < y1)
+              cells[(y - y0) * tileSize + x - x0] = encode(color, Math.round(z), kind);
+          }
+          function rect(x, y, w, h, color, z = 2, kind = 0) {
+            const a = Math.max(x0, Math.floor(x)),
+              b = Math.min(x1, Math.ceil(x + w));
+            const c = Math.max(y0, Math.floor(y)),
+              d = Math.min(y1, Math.ceil(y + h));
+            if (a >= b || c >= d) return;
+            const cell = encode(color, Math.round(z), kind);
+            for (let yy = c; yy < d; yy++)
+              cells.fill(cell, (yy - y0) * tileSize + a - x0, (yy - y0) * tileSize + b - x0);
+          }
+          function crown(x, y, r, high) {
+            const a = Math.max(x0, x - r),
+              b = Math.min(x1 - 1, x + r),
+              c = Math.max(y0, y - r),
+              d = Math.min(y1 - 1, y + r);
+            for (let yy = c; yy <= d; yy++)
+              for (let xx = a; xx <= b; xx++) {
+                const dx = (xx - x) / r,
+                  dy = (yy - y) / r,
+                  k = 1 - dx * dx - dy * dy;
+                if (k < 0) continue;
+                const tone = clamp(
+                  Math.floor(2.6 + 0.6 * k - 1.8 * dx - 1.2 * dy + ((xx ^ yy) & 1) * 0.45),
+                  0,
+                  5,
+                );
+                put(xx, yy, foliage[tone], 3 + high * Math.sqrt(k), mats.TREE);
               }
-              const z = 5 + height * fraction;
-              const flute = Math.floor((Math.atan2(dy, dx) * 10) / Math.PI);
-              const lit = (dx * 0.63 + dy * 0.78) / r;
-              let n = clamp(Math.round(3.5 - lit * 2.6) + (flute & 1 ? 0 : -1), 0, body.length - 1);
-              let color = body[n];
-              if (kind === "prang" && p > 0.22 && Math.floor(z + 1) % 6 < 1)
-                color = lit < 0 ? stone[6] : stone[2];
-              if (kind === "prang" && p > 0.48 && (dx * 3 + dy * 7) % 11 === 0) color = emerald[2];
-              if (p < 0.1) color = gold[lit < 0 ? 5 : 3];
-              const i = index(cx + dx, cy + dy);
-              set(i, color, z);
-              material[i] = kind === "prang" ? PRANG : CHEDI;
-            }
-        }
-
-        // Wat Arun: the high porcelain prang rises from a square courtyard with
-        // four smaller corner towers, adjacent halls and steps down to the river.
-        compound(-110, -25, 53, 49, -0.065);
-        templeHall(-137, -19, 6, 17, -0.065);
-        templeHall(-133, -51, 5, 9, -0.065, true);
-        templeHall(-103, 10, 16, 6, -0.065);
-        for (const dx of [-21, 21]) for (const dy of [-18, 18]) spire(-92 + dx, -24 + dy, 6, 24, "prang");
-        spire(-92, -24, 17, 59, "prang");
-        for (const x of [-145, -126, -103, -83]) crown(x, 16, 3);
-
-        // Wat Pho: long ordination halls and the four differently glazed royal chedis.
-        compound(111, -45, 49, 48, 0.085);
-        templeHall(125, -52, 12, 24, 0.085);
-        templeHall(95, -66, 7, 17, 0.085, true);
-        templeHall(123, -10, 24, 5, 0.085);
-        templeHall(148, -47, 4, 23, 0.085, true);
-        for (const [x, y, col] of [
-          [84, -40, emerald],
-          [85, -24, tile],
-          [101, -39, blue],
-          [102, -23, gold],
-        ]) {
-          spire(x, y, 6, 27, "chedi", col);
-        }
-        for (const x of [73, 85, 99, 113, 130, 143]) crown(x, -85, 3);
-
-        // The walled palace quarter has a royal audience hall and the clustered
-        // chapel roofs and golden reliquary spire of the Emerald Buddha temple.
-        compound(125, -171, 78, 68, 0.075);
-        templeHall(97, -149, 11, 31, 0.075);
-        templeHall(96, -151, 6, 33, Math.PI * 0.5 + 0.075);
-        spire(97, -151, 6, 25, "chedi", gold);
-        templeHall(143, -151, 9, 21, 0.075, true);
-        templeHall(164, -194, 11, 23, 0.075);
-        templeHall(119, -195, 9, 17, 0.075);
-        spire(138, -210, 10, 38, "chedi", gold);
-        spire(106, -208, 6, 27, "prang");
-        for (const x of [63, 76, 89, 102, 115, 128, 141, 154, 167, 180]) crown(x, -115, 3);
-
-        // Riverside landing stages and enclosed passenger launches.
-        for (let y = -477; y < 492; y += range(28, 51)) {
-          const side = random() < 0.5 ? 1 : -1;
-          const bank = riverCentre(y) + side * riverHalfWidth(y);
-          const len = range(9, 18),
-            end = Math.round(bank) - side * len;
-          stamp(Math.round(bank - side * (len / 2)), y, len * 0.5, 1.6, 0, (i, u, v) =>
-            set(i, bark[Math.floor(u) & 3 ? 2 : 1], 3),
-          );
-          stamp(end, y, 2, 4, 0, (i, u, v) => set(i, bark[Math.floor(v) % 3 ? 2 : 3], 3));
-        }
-        for (const [y, spread, length, tint] of [
-          [-406, -0.25, 10, 0],
-          [-262, 0.38, 8, 2],
-          [-158, -0.52, 11, 1],
-          [-78, 0.25, 10, 0],
-          [3, -0.24, 12, 0],
-          [39, 0.4, 8, 2],
-          [106, -0.12, 9, 1],
-          [181, -0.45, 12, 0],
-          [284, 0.3, 8, 2],
-          [410, 0.24, 9, 0],
-        ]) {
-          const x = Math.round(riverCentre(y) + spread * riverHalfWidth(y));
-          const angle = -(riverCentre(y + 2) - riverCentre(y - 2)) * 0.25 + (tint - 1) * 0.2;
-          stamp(x, y, 3, length, angle, (i, u, v) => {
-            const ratio = Math.abs(v) / length;
-            const width = (2.7 - 0.7 * ratio) * (1 - ratio ** 4);
-            if (Math.abs(u) > width) return;
-            const hull = width - Math.abs(u) < 0.8 || ratio > 0.84;
-            const cabin = Math.abs(v + 1) < length * 0.46 && Math.abs(u) < 1.8;
-            const cloth =
-              tint === 1 ? tile[u < 0 ? 3 : 2] : tint === 2 ? emerald[u < 0 ? 3 : 2] : bark[u < 0 ? 3 : 2];
-            let color = hull ? bark[0] : cabin ? cloth : bark[1];
-            if (!hull && !cabin && Math.floor(v) % 3 === 0) color = bark[3];
-            if (cabin && Math.floor(v + length * 0.46) === 1) color = stone[4];
-            set(i, color, cabin ? 2 : 1);
-            material[i] = BOAT;
-          });
-        }
-        for (let i = 0; i < 5000; i++) {
-          const x = range(-512, 511),
-            y = range(-512, 511);
-          if (!riverMask[index(x, y)]) continue;
-          const length = range(2, 7),
-            tint = random() < 0.09 ? 9 : range(5, 7);
-          for (let n = 0; n < length; n++) {
-            const j = index(x + n, y + Math.floor(n * 0.24));
-            if (riverMask[j]) paint[j] = water[tint];
           }
-        }
-        for (let i = 0; i < count; i++) {
-          const color = paint[i];
-          if (color >= roofColors[0][0] && color <= roofColors[roofColors.length - 1][3]) material[i] = HOUSE;
-          if (color >= tree[0] && color <= tree[6]) material[i] = TREE;
-        }
-
-        // Vertical faces have material of their own, visible from a low pass or from
-        // the oblique map. Mortar bands follow the porcelain towers as the view turns.
-        function faceColor(kind, color, altitude, topHeight, x, y) {
-          const level = Math.floor(altitude);
-          if (kind === PRANG) {
-            if (color >= gold[0] && color <= gold[5]) return level % 3 === 0 ? gold[4] : color;
-            if (level > 8 && level % 4 === 0) return stone[2];
-            if (level > 10 && level % 4 === 1) return stone[5];
-            if (level < 37 && (x + y + level) % 7 === 0) return emerald[2];
-            return color;
-          }
-          if (kind === CHEDI) {
-            if (level > 8 && level % 4 === 0) return gold[2];
-            return color;
-          }
-          if (kind === HALL && level < 8) {
-            if (level > 3 && ((x + y) & 3) === 0) return stone[1];
-            return stone[4];
-          }
-          if (kind === HOUSE && level < topHeight - 1) {
-            const teak = color <= roofColors[1][3];
-            if (level === 3 && ((x + y) & 3) === 0) return bark[0];
-            return teak ? bark[2] : stone[2];
-          }
-          if (kind === TREE && level < topHeight - 2) return tree[level < 5 ? 0 : 1];
-          if (kind === BOAT && level < 2) return bark[1];
-          return color;
-        }
-
-        // Relief casts small afternoon shadows across roads and compounds. Bake
-        // the oblique overhead image back-to-front so tower silhouettes rise above roofs.
-        const shade = new Uint8Array(count);
-        for (let y = 0; y < size; y++)
-          for (let x = 0; x < size; x++) {
-            const i = index(x, y),
-              z = relief[i];
-            if (z < 5) continue;
-            const distance = Math.ceil(z * 0.59);
-            for (let d = 1; d < distance; d++) {
-              const j = index(x + Math.round(d * 0.67), y + d);
-              if (relief[j] < z - d / 0.59 - 1) shade[j] = 1;
+          function building(x, y, w, h, height, tint, kind, rng) {
+            rect(x, y, w, h, tint, height, kind);
+            rect(x, y, w, 1, paving[3], height + 1, kind);
+            rect(x, y, 1, h, paving[2], height + 1, kind);
+            rect(x + w - 1, y, 1, h, asphalt[3], height, kind);
+            if (w >= 12 && h >= 10) {
+              const inset = 2 + Math.floor(rng() * 2);
+              rect(x + inset, y + inset, w - 2 * inset, h - 2 * inset, tint, height + 2, kind);
+              rect(
+                x + inset + 1,
+                y + inset + 1,
+                Math.max(3, w * 0.22),
+                Math.max(2, h * 0.2),
+                roofs[7],
+                height + 3,
+                kind,
+              );
+              if (w > 20) {
+                rect(
+                  x + w * 0.56,
+                  y + h * 0.5,
+                  w * 0.28,
+                  h * 0.27,
+                  height > 20 ? river[4] : roofs[2],
+                  height + 3,
+                  kind,
+                );
+                rect(x + w * 0.56, y + h * 0.5, w * 0.28, 1, paving[3], height + 4, kind);
+              }
             }
           }
-        const map = document.createElement("canvas");
-        map.width = map.height = size;
-        const mapContext = map.getContext("2d"),
-          texture = mapContext.createImageData(size, size);
-        const pixels = new Uint32Array(texture.data.buffer);
-        for (let y = -42; y < size + 42; y++)
-          for (let x = 0; x < size; x++) {
-            const i = index(x, y),
-              z = relief[i],
-              elevation = Math.round(z * 0.61);
-            const yr = y - elevation;
-            if (yr >= size || y < 0) continue;
-            // Vertical faces fill the discontinuities where the roof steps up.
-            const surface = paint[i],
-              kind = material[i];
-            for (let sy = Math.max(0, yr + 1); sy <= Math.min(y, size - 1); sy++) {
-              const face = faceColor(kind, surface, (y - sy) / 0.61, z, x, y);
-              pixels[sy * size + x] = wallPalette[face];
+          function block(bx, by) {
+            const X = roadLine(bx, 3),
+              Y = roadLine(by, 5),
+              W = roadLine(bx + 1, 3) - X,
+              H = roadLine(by + 1, 5) - Y;
+            if (X >= x1 || Y >= y1 || X + W <= x0 || Y + H <= y0) return;
+            const d = Math.hypot(X * 0.92, Y * 1.02),
+              r = stream(bx, by, 19);
+            const rand = (a, b) => Math.floor(a + r() * (b - a + 1));
+            const chanceCity = clamp(1.04 - (d - 1600) / 7000, 0.065, 1);
+            const farm = r() > chanceCity || Y > coastAt(X) - 570;
+            const blockTint = r();
+            rect(X, Y, W, H, farm ? fields[rand(0, fields.length - 1)] : paving[rand(0, 2)], 2);
+            if (farm) {
+              const diagonal = r() > 0.65,
+                step = rand(5, 10),
+                tint = fields[rand(0, fields.length - 1)];
+              if (diagonal) {
+                for (let yy = Math.max(y0, Y); yy < Math.min(y1, Y + H); yy++) {
+                  const shift = (yy - Y) >> 2;
+                  for (let xx = X + (((shift % step) + step) % step); xx < X + W; xx += step) put(xx, yy, tint);
+                }
+              } else {
+                for (let dy = rand(2, step); dy < H; dy += step) rect(X + 3, Y + dy, W - 5, 1, tint);
+              }
+              const road = bx % 4 === 0 || by % 4 === 0;
+              rect(
+                X,
+                Y,
+                road ? 4 : 2,
+                H,
+                road ? asphalt[2] : canal[2],
+                road ? 2 : 0,
+                road ? mats.ROAD : mats.WATER,
+              );
+              rect(X, Y, W, 2, fields[4]);
+              if (r() > 0.7)
+                building(X + 7, Y + 9, rand(8, 14), rand(9, 20), rand(4, 8), roofs[rand(0, 9)], mats.HOUSE, r);
+              const trees = rand(1, 5);
+              for (let i = 0; i < trees; i++)
+                crown(X + rand(5, 10), Y + rand(5, H - 6), rand(2, 4), rand(3, 6));
+              return;
             }
-            if (yr >= 0) pixels[yr * size + x] = (shade[i] ? shadePalette : palette)[surface];
+            const majorX = Math.abs(bx) % 4 === 0,
+              majorY = Math.abs(by) % 5 === 0;
+            const rw = majorX ? 11 : 5,
+              rh = majorY ? 12 : 5;
+            rect(X, Y, rw, H, asphalt[1], 2, mats.ROAD);
+            rect(X, Y, W, rh, asphalt[1], 2, mats.ROAD);
+            if (majorX) for (let off = 6; off < H; off += 12) rect(X + 5, Y + off, 1, 6, asphalt[5]);
+            if (majorY) for (let off = 6; off < W; off += 12) rect(X + off, Y + 5, 6, 1, asphalt[5]);
+            if (majorY)
+              for (let off = 13; off < W - 5; off += rand(14, 37))
+                rect(X + off, Y + rand(2, 9), 3, 1, trailers[rand(0, 5)], 3);
+            const highrise = d < 2550 && r() < 0.73 - (0.35 * d) / 2550;
+            const warehouse = d > 1100 && r() < 0.16;
+            const park = !warehouse && r() < (d > 3500 ? 0.16 : 0.085);
+            if (park) {
+              rect(X + rw + 2, Y + rh + 2, W - rw - 4, H - rh - 4, grass[2]);
+              for (let i = 0; i < 25; i++)
+                crown(X + rand(rw + 8, W - 8), Y + rand(rh + 8, H - 8), rand(3, 7), rand(4, 10));
+              if (blockTint > 0.38) {
+                rect(X + W * 0.37, Y + H * 0.34, W * 0.36, H * 0.42, paving[2]);
+                rect(X + W * 0.37 + 2, Y + H * 0.34 + 2, W * 0.36 - 4, H * 0.42 - 4, grass[0]);
+                rect(X + W * 0.54, Y + H * 0.34 + 2, 1, H * 0.42 - 4, porcelain[3]);
+              }
+            } else if (warehouse) {
+              const rows = rand(2, 3),
+                ww = W - rw - 12,
+                hh = Math.floor((H - rh - 8) / rows) - 3;
+              for (let n = 0; n < rows; n++) {
+                const yy = Y + rh + 5 + n * (hh + 3),
+                  tint = roofs[rand(2, 6)];
+                building(X + rw + 5, yy, ww, hh, rand(5, 11), tint, mats.HOUSE, r);
+                for (let strip = 9; strip < ww - 3; strip += 9)
+                  rect(X + rw + 5 + strip, yy + 2, 1, hh - 4, roofs[2], 9, mats.HOUSE);
+              }
+            } else {
+              const cols = highrise ? rand(2, 3) : rand(3, 5),
+                rows = highrise ? rand(2, 3) : rand(3, 5);
+              const cw = (W - rw - 5) / cols,
+                ch = (H - rh - 5) / rows;
+              for (let j = 0; j < rows; j++)
+                for (let i = 0; i < cols; i++) {
+                  const xx = Math.floor(X + rw + 3 + i * cw),
+                    yy = Math.floor(Y + rh + 3 + j * ch);
+                  if (r() < (d > 3800 ? 0.28 : 0.11)) {
+                    crown(xx + 6, yy + 6, rand(3, 6), rand(5, 9));
+                    continue;
+                  }
+                  const ww = Math.max(5, Math.floor(cw) - rand(3, Math.max(4, Math.floor(cw * 0.37))));
+                  const hh = Math.max(5, Math.floor(ch) - rand(3, Math.max(4, Math.floor(ch * 0.38))));
+                  const tall = highrise && r() < 0.47;
+                  const kind = tall ? (r() < 0.55 ? mats.GLASS : mats.CONCRETE) : mats.HOUSE;
+                  const z = tall ? rand(24, 72) : rand(5, d < 2600 ? 20 : 10);
+                  const palette = tall ? (kind === mats.GLASS ? glass : concrete) : roofs;
+                  building(xx, yy, ww, hh, z, palette[rand(0, palette.length - 1)], kind, r);
+                  if (ww < cw - 6) crown(xx + ww + 3, yy + 2, 2, 4);
+                }
+            }
           }
-        mapContext.putImageData(texture, 0, 0);
+          // Open water contains no city blocks. The coast has its own seeded texture.
+          if (y0 < coastAt(x0) + 300) {
+            for (let by = Math.floor((y0 - 15) / 96); by <= Math.floor((y1 + 15) / 96); by++) {
+              for (let bx = Math.floor((x0 - 15) / 96); bx <= Math.floor((x1 + 15) / 96); bx++) block(bx, by);
+            }
+          }
+          const coast = [];
+          for (let x = x0; x < x1; x++) coast.push(coastAt(x));
+          const randomCell = stream(cx, cy, 72);
+          for (let y = y0; y < y1; y++) {
+            const center = city.riverX(y),
+              half = city.riverHalfWidth(y);
+            const nearMouth = clamp((y - 9500) / 3100, 0, 1);
+            for (let x = x0; x < x1; x++) {
+              const seaDepth = y - coast[x - x0];
+              const shore = Math.abs(x - center) - half;
+              if (seaDepth <= 0 && shore >= 3) continue;
+              const i = (y - y0) * tileSize + x - x0;
+              if (seaDepth > 0 || shore < 0) {
+                const isSea = seaDepth > 0 && (Math.abs(x - center) > half || seaDepth > 250);
+                const colors = isSea ? gulf : river;
+                const wave =
+                  0.75 * Math.sin(x * 0.047 + Math.sin(y * 0.058 + 1.1 * Math.sin(x * 0.0038))) +
+                  0.5 * Math.sin(x * 0.023 + y * 0.068);
+                const edge = Math.max(0, 1 + (isSea ? -seaDepth : shore) / 13);
+                const tone = clamp(
+                  Math.round(2.1 + wave + edge * 2.1 + nearMouth * 0.3 + randomCell() * 0.19),
+                  0,
+                  5,
+                );
+                cells[i] = encode(colors[tone], 0, mats.WATER);
+              } else {
+                cells[i] = encode(y > 4500 ? grass[2] : paving[1], 2, 0);
+              }
+            }
+          }
+          // Traffic on the river, selected by reach. Clipping allows boats across tiles.
+          for (let j = Math.floor((y0 - 15) / 89); j <= Math.floor((y1 + 15) / 89); j++) {
+            const r = stream(13, j, 17),
+              boatY = Math.floor((j + r() * 0.7) * 89);
+            const center = city.riverX(boatY),
+              half = city.riverHalfWidth(boatY);
+            const bx = Math.floor(center + (r() - 0.5) * half * 1.53);
+            const hullLength = 8 + Math.floor(r() * 9),
+              canopy = trailers[Math.floor(r() * trailers.length)];
+            if (bx < x0 - 5 || bx > x1 + 5 || boatY > coastAt(bx) + 100 || r() > 0.73) continue;
+            for (let v = -hullLength; v <= hullLength; v++) {
+              const w = 2.8 * (1 - Math.pow(Math.abs(v / hullLength), 3));
+              rect(bx - w, boatY + v, w * 2, 1, porcelain[3], 1, mats.BOAT);
+              if (Math.abs(v) < hullLength * 0.55) rect(bx - 1, boatY + v, 3, 1, canopy, 3, mats.BOAT);
+            }
+          }
+          city.drawTile({ x: x0, y: y0, size: tileSize, put });
+          return { x: x0, y: y0, cells };
+        }
+
+        const cache = new Map(),
+          nearby = new Array(32 * 32);
+        const cacheLimit = 640;
+        let currentTile,
+          visits = 0;
+        function getTile(cx, cy) {
+          const slot = ((cy & 31) << 5) | (cx & 31),
+            fast = nearby[slot];
+          if (fast && fast.x === cx * tileSize && fast.y === cy * tileSize) {
+            fast.touched = ++visits;
+            return fast;
+          }
+          const key = cx + "," + cy;
+          let tile = cache.get(key);
+          if (!tile) {
+            if (cache.size >= cacheLimit) {
+              const oldest = Array.from(cache.values()).sort((a, b) => a.touched - b.touched);
+              for (let i = 0; i < 64; i++) {
+                const expired = oldest[i];
+                cache.delete(expired.key);
+                if (nearby[expired.slot] === expired) nearby[expired.slot] = undefined;
+              }
+            }
+            tile = generateTile(cx, cy);
+            tile.key = key;
+            tile.slot = slot;
+            cache.set(key, tile);
+          }
+          tile.touched = ++visits;
+          nearby[slot] = tile;
+          return tile;
+        }
+        function sample(x, y) {
+          x = Math.floor(x);
+          y = Math.floor(y);
+          if (
+            !currentTile ||
+            x < currentTile.x ||
+            x >= currentTile.x + tileSize ||
+            y < currentTile.y ||
+            y >= currentTile.y + tileSize
+          ) {
+            currentTile = getTile(Math.floor(x / tileSize), Math.floor(y / tileSize));
+          }
+          return currentTile.cells[(y & tileMask) * tileSize + (x & tileMask)];
+        }
 
         // Bake tiny cumulus sprites with separate masks for their shadows on the water.
         function cloudSprite(w, h) {
@@ -1356,126 +2116,146 @@
           return { cloud, shade, w, h };
         }
         const clouds = [cloudSprite(41, 23), cloudSprite(62, 36), cloudSprite(80, 37), cloudSprite(27, 17)];
-        const cloudPositions = [
-          [-310, -110, 0],
-          [283, 120, 1],
-          [-379, 180, 2],
-          [248, 321, 3],
-          [382, -263, 2],
-          [-389, -326, 1],
-          [-34, 453, 2],
-          [367, 390, 0],
-          [-69, -296, 3],
-        ];
 
+        let aerial, aerialPixels;
         function overhead(ctx, view, flight) {
           const { width: w, height: h } = view;
-          const scale = 0.82 + 0.82 * flight.altitude;
-          const left = flight.x - (w * scale) / 2;
-          const top = flight.y - (h * scale) / 2;
-          const x0 = Math.floor(left / size);
-          const y0 = Math.floor(top / size);
-          for (let ty = y0; ty <= Math.floor((top + h * scale) / size); ty++) {
-            for (let tx = x0; tx <= Math.floor((left + w * scale) / size); tx++) {
-              const x = Math.round((tx * size - left) / scale);
-              const y = Math.round((ty * size - top) / scale);
-              const right = Math.round(((tx + 1) * size - left) / scale);
-              const bottom = Math.round(((ty + 1) * size - top) / scale);
-              ctx.drawImage(map, x, y, right - x, bottom - y);
+          const units = overheadUnits(flight.altitude);
+          const left = flight.x - (w * units) / 2,
+            top = flight.y - (h * units) / 2;
+          if (!aerial || aerial.width !== w || aerial.height !== h) {
+            aerial = ctx.createImageData(w, h);
+            aerialPixels = new Uint32Array(aerial.data.buffer);
+          }
+          // Scan from nearby rows towards the horizon. Taller structures occlude
+          // farther surfaces, while the relief below the roof exposes floors and windows.
+          const tilt = 0.56;
+          const extra = Math.ceil((230 * tilt) / units) + 2;
+          for (let col = 0; col < w; col++) {
+            const x = Math.floor(left + (col + 0.5) * units);
+            let bottom = h;
+            for (let row = h + extra; row >= 0 && bottom > 0; row--) {
+              const y = Math.floor(top + (row + 0.5) * units);
+              const cell = sample(x, y),
+                z = heightOf(cell);
+              const sy = Math.round(row - (z * tilt) / units);
+              if (sy >= bottom) continue;
+              const id = cell & 4095,
+                kind = matOf(cell);
+              let tint = palette[id];
+              if (z < 34) {
+                const near = heightOf(sample(x - 5, y - 5));
+                if (near > z + 12 || heightOf(sample(x - 13, y - 15)) > z + 30) tint = shadow[id];
+              }
+              if (sy >= 0) aerialPixels[sy * w + col] = tint;
+              for (let py = Math.max(0, sy + 1); py < bottom; py++) {
+                const level = ((row - py) * units) / tilt;
+                aerialPixels[py * w + col] = wall[facade(kind, id, level, z, x, y)];
+              }
+              bottom = Math.max(0, sy);
             }
           }
-          // Flecks of light drift across the river between ferries and landing stages.
-          const grid = 38;
-          const t = flight.time;
-          for (let j = Math.floor(top / grid); j <= Math.floor((top + h * scale) / grid); j++) {
-            for (let k = Math.floor(left / grid); k <= Math.floor((left + w * scale) / grid); k++) {
-              const hash = Math.imul(k, 92837111) ^ Math.imul(j, 689287499);
-              const phase = ((hash >>> 0) / 4294967296) * 26;
-              const shimmer = Math.sin(t * 2.1 + phase);
-              if (shimmer < 0.42) continue;
-              const wx = (k + ((hash >>> 14) % 100) / 105) * grid + shimmer;
-              const wy = (j + ((hash >>> 1) % 100) / 105) * grid;
-              if (!riverMask[index(Math.floor(wx), Math.floor(wy))]) continue;
-              const x = Math.round((wx - left) / scale);
-              const y = Math.round((wy - top) / scale);
-              ctx.fillStyle = shimmer > 0.91 ? "#c8c6a1" : "#8ca98d";
-              ctx.fillRect(x, y, Math.max(1, Math.round((shimmer * 3) / scale)), 1);
+          ctx.putImageData(aerial, 0, 0);
+          // Local river and sea glints travel across the water, with independent
+          // phases for each world cell. Clouds and shadows have matching world anchors.
+          const grid = 47,
+            t = flight.time;
+          for (let j = Math.floor(top / grid); j <= Math.floor((top + h * units) / grid); j++) {
+            for (let k = Math.floor(left / grid); k <= Math.floor((left + w * units) / grid); k++) {
+              const key = hash(k, j, 93),
+                shimmer = Math.sin(t * 1.7 + (key & 255) * 0.099);
+              if (shimmer < 0.38) continue;
+              const wx = (k + ((key >>> 12) & 127) / 128) * grid + shimmer,
+                wy = (j + (key & 127) / 128) * grid;
+              if (matOf(sample(wx, wy)) !== mats.WATER) continue;
+              const x = Math.round((wx - left) / units),
+                y = Math.round((wy - top) / units);
+              ctx.fillStyle = shimmer > 0.92 ? "#d3ddbb" : "#8fb6a9";
+              ctx.fillRect(x, y, Math.max(1, Math.round((4 * shimmer) / units)), 1);
             }
           }
-          for (const [cx, cy, kind] of cloudPositions) {
-            const sprite = clouds[kind];
-            const cloudX = cx + flight.time * 1.2;
-            const cloudY = cy + flight.time * 0.36;
-            const dx = cloudX - flight.x;
-            const dy = cloudY - flight.y;
-            const wrapX = dx - size * Math.round(dx / size);
-            const wrapY = dy - size * Math.round(dy / size);
-            const x = Math.round(w / 2 + wrapX / scale);
-            const y = Math.round(h / 2 + wrapY / scale);
-            const cw = Math.round(sprite.w / scale);
-            const ch = Math.round(sprite.h / scale);
-            if (x + cw < -28 || y + ch < -28 || x > w + 28 || y > h + 28) continue;
-            ctx.drawImage(sprite.shade, x + Math.round(11 / scale), y + Math.round(17 / scale), cw, ch);
-            const parallax = 0.026 + flight.altitude * 0.032;
-            ctx.drawImage(
-              sprite.cloud,
-              Math.round(x + wrapX * parallax),
-              Math.round(y + wrapY * parallax),
-              cw,
-              ch,
-            );
+          const windX = t * 1.4,
+            windY = t * 0.38,
+            spacing = 440;
+          for (
+            let gy = Math.floor((top - windY - 100) / spacing);
+            gy <= Math.floor((top + h * units - windY) / spacing);
+            gy++
+          ) {
+            for (
+              let gx = Math.floor((left - windX - 100) / spacing);
+              gx <= Math.floor((left + w * units - windX) / spacing);
+              gx++
+            ) {
+              const n = hash(gx, gy, 37);
+              if ((n & 15) < 8 || (gx === 0 && gy === 0)) continue;
+              const wx = (gx + ((n >>> 4) & 255) / 256) * spacing + windX;
+              const wy = (gy + ((n >>> 13) & 255) / 256) * spacing + windY;
+              const sprite = clouds[n % clouds.length];
+              const x = (wx - left) / units,
+                y = (wy - top) / units,
+                cw = sprite.w / units,
+                ch = sprite.h / units;
+              ctx.globalAlpha = 0.45;
+              ctx.drawImage(
+                sprite.shade,
+                Math.round(x + 12 / units),
+                Math.round(y + 18 / units),
+                Math.ceil(cw),
+                Math.ceil(ch),
+              );
+              ctx.globalAlpha = flight.altitude > 0.5 ? 0.8 : 0.64;
+              ctx.drawImage(sprite.cloud, Math.round(x), Math.round(y), Math.ceil(cw), Math.ceil(ch));
+              ctx.globalAlpha = 1;
+            }
           }
         }
 
-        // Sample the same landscape in depth order. A column's silhouette clips
-        // distant pixels, so rooflines and temple spires rise above the river.
-        const haze = [209, 206, 174];
+        const haze = [184, 204, 198];
         const fogBands = Array.from({ length: 32 }, (_, n) => {
           const f = n / 31;
-          return rgb.map((color) => packed(...color.map((v, j) => Math.round(v + (haze[j] - v) * f))));
+          return rgb.map((c) => packed(...c.map((v, k) => Math.round(v + (haze[k] - v) * f))));
         });
-        let ground, groundPixels, columns;
-        let groundCanvas, groundContext;
+        let ground, groundPixels, columns, groundCanvas, groundContext;
         function perspective(ctx, view, flight, padX = 0, padY = 0) {
-          const w = view.width + 2 * padX;
-          const h = view.height + 2 * padY;
+          const w = view.width + 2 * padX,
+            h = view.height + 2 * padY;
           const chase = view.mode === "chase";
-          const skyHeight = view.height * (chase ? 0.3 : 0.4);
-          const horizon = padY + skyHeight;
+          const skyHeight = flightHorizon(view, flight),
+            horizon = padY + skyHeight;
           const bank = clamp(flight.bank || 0, -1, 1) * 0.08;
           const cos = Math.cos(flight.heading),
             sin = Math.sin(flight.heading);
-          const cameraX = flight.x - (chase ? 56 * cos : 0);
-          const cameraY = flight.y - (chase ? 56 * sin : 0);
-          const cameraZ = 43 + flight.altitude * 109;
+          const cameraX = flight.x - (chase ? 56 * cos : 0),
+            cameraY = flight.y - (chase ? 56 * sin : 0);
+          const cameraZ = flightHeight(flight.altitude) + (chase ? 16 : 0);
           const focal = perspectiveFocalLength(view);
-
-          ctx.fillStyle = "#d4d2b5";
+          ctx.fillStyle = "#b8ccc6";
           ctx.fillRect(0, 0, w, h);
-          ctx.fillStyle = "#81a9b7";
+          ctx.fillStyle = "#75a8b9";
           ctx.fillRect(0, 0, w, padY);
-          for (let s = 0; s < 28; s++) {
-            const t = s / 27;
+          for (let i = 0; i < 28; i++) {
+            const f = i / 27;
             ctx.fillStyle =
               "rgb(" +
-              Math.round(129 + 83 * t) +
+              Math.round(117 + 67 * f) +
               "," +
-              Math.round(169 + 41 * t) +
+              Math.round(168 + 36 * f) +
               "," +
-              Math.round(183 - 2 * t) +
+              Math.round(185 + 13 * f) +
               ")";
-            ctx.fillRect(0, padY + Math.floor((skyHeight * s) / 28), w, Math.ceil(skyHeight / 28) + 1);
+            ctx.fillRect(0, padY + Math.floor((skyHeight * i) / 28), w, Math.ceil(skyHeight / 28) + 1);
           }
           for (let n = 0; n < 18; n++) {
-            const a = (n * Math.PI) / 9 + 0.035 * Math.sin(n * 17) + flight.time * 0.001;
+            const a = (n * Math.PI) / 9 + 0.035 * Math.sin(n * 17) + flight.time * 0.0007;
             const dx = Math.cos(a) * cos + Math.sin(a) * sin;
             if (dx < 0.42) continue;
-            const lateral = Math.sin(a) * cos - Math.cos(a) * sin;
-            const x = w * 0.5 + (focal * lateral) / dx;
-            const cloud = clouds[(n * 7) % clouds.length];
-            const shrink = (view.height / 330) * (0.53 + 0.23 * (1 + Math.sin(n * 8)));
+            const lateral = Math.sin(a) * cos - Math.cos(a) * sin,
+              x = w * 0.5 + (focal * lateral) / dx;
+            const cloud = clouds[(n * 7) % clouds.length],
+              shrink = (view.height / 350) * (0.65 + 0.22 * Math.sin(n * 8));
             const y =
-              horizon - view.height * (0.055 + 0.095 * (0.5 + 0.5 * Math.sin(n * 11))) - (x - w * 0.5) * bank;
+              horizon - view.height * (0.065 + 0.14 * (0.5 + 0.5 * Math.sin(n * 11))) - (x - w * 0.5) * bank;
             ctx.drawImage(
               cloud.cloud,
               Math.round(x),
@@ -1495,42 +2275,42 @@
           }
           groundPixels.fill(0);
           columns.fill(h);
-          const near = chase ? Math.max(5, ((cameraZ - 66) * focal) / (h - horizon + 1)) : 5;
-          for (let depth = near; depth < 1100; depth += 0.46 + depth * 0.0075) {
-            const unit = depth / focal;
-            const left = -w * 0.5 * unit;
-            let wx = cameraX + cos * depth - sin * left;
-            let wy = cameraY + sin * depth + cos * left;
+          const near = Math.max(3, ((cameraZ - 226) * focal) / (h - horizon + 1));
+          const far = 1450 + flight.altitude * 560;
+          for (let depth = near; depth < far; depth += 0.65 + depth * 0.0105) {
+            const unit = depth / focal,
+              left = -w * 0.5 * unit;
+            let wx = cameraX + cos * depth - sin * left,
+              wy = cameraY + sin * depth + cos * left;
             const dx = -sin * unit,
               dy = cos * unit;
-            const fog = clamp((depth - 65) / 920, 0, 1);
-            const colors = fogBands[Math.round(fog * (1.7 - 0.7 * fog) * 31)];
+            const fog = clamp((depth - 110) / (far - 110), 0, 1);
+            const colors = fogBands[Math.round(fog * (1.45 - 0.45 * fog) * 31)];
             for (let x = 0; x < w; x++, wx += dx, wy += dy) {
-              const groundX = Math.floor(wx),
-                groundY = Math.floor(wy);
-              const i = index(groundX, groundY),
-                topZ = relief[i];
-              const columnHorizon = horizon - (x - w * 0.5) * bank;
-              const y = clamp(Math.floor(columnHorizon + (cameraZ - topZ) / unit), 0, h);
-              const bottom = columns[x];
+              if (columns[x] === 0) continue;
+              const cell = sample(wx, wy),
+                topZ = heightOf(cell),
+                columnHorizon = horizon - (x - w * 0.5) * bank;
+              const y = clamp(Math.floor(columnHorizon + (cameraZ - topZ) / unit), 0, h),
+                bottom = columns[x];
               if (y >= bottom) continue;
-              const surface = paint[i],
-                color = colors[surface],
-                kind = material[i];
-              if (kind && bottom - y > 1) {
-                const firstHeight = cameraZ - (y + 0.5 - columnHorizon) * unit;
-                for (let row = y; row < bottom; row++) {
-                  const altitude = firstHeight - (row - y) * unit;
-                  groundPixels[row * w + x] =
-                    colors[faceColor(kind, surface, altitude, topZ, groundX, groundY)];
+              const id = cell & 4095,
+                kind = matOf(cell);
+              const roofRow = Math.floor(columnHorizon + (cameraZ - topZ) / unit);
+              if (roofRow >= 0) groundPixels[y * w + x] = colors[id];
+              const start = roofRow >= 0 ? y + 1 : y;
+              if (kind && bottom - start > 0) {
+                for (let py = start; py < bottom; py++) {
+                  const level = cameraZ - (py + 0.5 - columnHorizon) * unit;
+                  groundPixels[py * w + x] =
+                    colors[facade(kind, id, level, topZ, Math.floor(wx), Math.floor(wy))];
                 }
               } else {
-                for (let row = y; row < bottom; row++) groundPixels[row * w + x] = color;
+                for (let py = start; py < bottom; py++) groundPixels[py * w + x] = colors[id];
               }
               columns[x] = y;
             }
           }
-          // Close the last few pixels between visible water and the optical horizon.
           for (let x = 0; x < w; x++) {
             const y = Math.max(0, Math.floor(horizon - (x - w * 0.5) * bank));
             for (let row = y; row < columns[x]; row++) groundPixels[row * w + x] = fogBands[31][0];
@@ -1569,8 +2349,9 @@
         }
 
         return {
-          landmarks,
-          size,
+          landmarks: city.landmarks,
+          spawn: city.spawn,
+          regionAt,
           draw(ctx, view, flight) {
             ctx.imageSmoothingEnabled = false;
             if (view.mode === "overhead") overhead(ctx, view, flight);
@@ -2234,13 +3015,7 @@
           const gauge = Math.max(7, Math.min(w * 0.059, h * 0.071));
           const instruments = [
             [0.34, 0.9, "AIR", (f.speed * 5.2) / 330, Math.round(f.speed * 5.2)],
-            [
-              0.5,
-              0.87,
-              "ALT",
-              (600 + f.altitude * 9400) / 10000,
-              Math.round((600 + f.altitude * 9400) / 10) * 10,
-            ],
+            [0.5, 0.87, "ALT", altitudeInFeet(f.altitude) / maximumAltitudeFeet, altitudeInFeet(f.altitude)],
             [0.66, 0.9, "RPM", 0.59 + 0.3 * f.boost, Math.round((1840 + 850 * f.boost) / 10) * 10],
           ];
           for (const [x, y, label, value, reading] of instruments) {
@@ -2295,21 +3070,29 @@
           const roll = f.roll - f.bank * 0.85,
             sr = Math.sin(roll),
             cr = Math.cos(roll);
+          const sp = Math.sin(f.pitch || 0),
+            cp = Math.cos(f.pitch || 0);
           function project([x, y, z]) {
             const side = y * cr - z * sr,
-              up = y * sr + z * cr;
+              bankedUp = y * sr + z * cr;
+            const forward = x * cp - bankedUp * sp,
+              up = x * sp + bankedUp * cp;
             if (overhead) {
-              const horiz = x * cos - side * sin,
-                vert = x * sin + side * cos;
+              const horiz = forward * cos - side * sin,
+                vert = forward * sin + side * cos;
               return [mid + scale * horiz, mid + scale * (vert * 0.96 - up * 0.29), vert * 0.29 + up * 0.96];
             }
-            return [mid + scale * side, mid - scale * (x * 0.285 + up * 0.958), -x * 0.958 + up * 0.285];
+            return [
+              mid + scale * side,
+              mid - scale * (forward * 0.285 + up * 0.958),
+              -forward * 0.958 + up * 0.285,
+            ];
           }
           const phase = f.time * 46 + Math.sin(f.time * 3) * 0.24;
           rasterize(project, phase);
           if (overhead) {
-            const shift = 5 + f.altitude * 17;
-            ctx.globalAlpha = 0.23 - f.altitude * 0.08;
+            const shift = 2 + f.altitude * 64;
+            ctx.globalAlpha = 0.28 - f.altitude * 0.22;
             ctx.drawImage(shadow, Math.round(cx - mid + shift * 0.75), Math.round(cy - mid + shift));
             ctx.globalAlpha = 1;
           }
@@ -2335,7 +3118,7 @@
       }
 
       // All aircraft, tracers and hit tests share continuous world positions.
-      // z uses the same vertical scale as the terrain camera (109 units of climb).
+      // z uses the same height units as the terrain and the player's flight camera.
       function createCombat() {
         const turn = Math.PI * 2;
         const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
@@ -2345,7 +3128,7 @@
         let previousPlayer;
 
         function playerPosition(flight) {
-          return { x: flight.x, y: flight.y, z: 43 + flight.altitude * 109 };
+          return { x: flight.x, y: flight.y, z: flightHeight(flight.altitude) };
         }
 
         function spawn(flight) {
@@ -2358,7 +3141,7 @@
           bandit = {
             x: flight.x + 73 * cos - offset * sin,
             y: flight.y + 73 * sin + offset * cos,
-            z: 43 + flight.altitude * 109 + 1.5,
+            z: flightHeight(flight.altitude) + 1.5,
             heading: flight.heading + side * 0.09,
             bank: 0,
             speed: 32,
@@ -2452,22 +3235,28 @@
 
         function fireGuns(flight, player) {
           const velocity = flight.speed + 220;
+          const boreSlope = Math.tan(flight.pitch || 0);
           let aim = flight.heading,
-            rise = 0;
+            rise = velocity * boreSlope;
           if (bandit) {
             const distance = Math.hypot(bandit.x - player.x, bandit.y - player.y);
             const travel = distance / velocity;
             const dx = bandit.x - player.x + Math.cos(bandit.heading) * bandit.speed * travel;
             const dy = bandit.y - player.y + Math.sin(bandit.heading) * bandit.speed * travel;
             const error = shortestTurn(Math.atan2(dy, dx) - aim);
-            if (distance < 208 && Math.abs(error) < 0.13 && Math.abs(bandit.z - player.z) < 11) {
+            if (
+              distance < 208 &&
+              Math.abs(error) < 0.13 &&
+              Math.abs(bandit.z - player.z - distance * boreSlope) < 11
+            ) {
               aim += error * 0.6;
               rise = clamp((bandit.z - player.z) / Math.max(0.13, travel), -36, 36);
             }
           }
           // Alternate the wing guns. The tracer begins outside the aircraft sprite.
           gunSide *= -1;
-          shoot(player, aim, 9, gunSide * 6, velocity, rise, false);
+          const muzzle = { x: player.x, y: player.y, z: player.z + 9 * boreSlope };
+          shoot(muzzle, aim, 9, gunSide * 6, velocity, rise, false);
         }
 
         // Closest point between two moving bodies during this simulation step.
@@ -2568,10 +3357,11 @@
           const { width, height, mode } = view;
           const c = Math.cos(flight.heading),
             s = Math.sin(flight.heading);
-          const scale = 0.82 + 0.82 * flight.altitude;
-          const playerZ = 43 + 109 * flight.altitude;
+          const scale = overheadUnits(flight.altitude);
+          const playerZ = flightHeight(flight.altitude);
           const chase = mode === "chase";
           const focal = perspectiveFocalLength(view);
+          const horizon = flightHorizon(view, flight);
           const bank = 0.08 * flight.bank;
           const roll = mode === "cockpit" ? flight.roll : 0;
           const cr = Math.cos(roll),
@@ -2592,7 +3382,7 @@
             const side = dy * c - dx * s;
             const ratio = focal / Math.max(4, depth);
             const sx = side * ratio;
-            const sy = height * ((chase ? 0.3 : 0.4) - 0.47) + ((chase ? 16 : 0) - dz) * ratio - sx * bank;
+            const sy = horizon - height * 0.47 + ((chase ? 16 : 0) - dz) * ratio - sx * bank;
             return {
               x: width / 2 + sx * cr - sy * sr,
               y: height * 0.47 + sx * sr + sy * cr,
@@ -2876,16 +3666,35 @@
         // Keep enough horizontal field of view to track a fighter on a portrait screen.
         return Math.min(view.height * 1.17, view.width * 1.15);
       }
+      const minimumAltitudeFeet = 200;
+      const maximumAltitudeFeet = 16000;
+      const altitudeRangeFeet = maximumAltitudeFeet - minimumAltitudeFeet;
+      function altitudeInFeet(altitude) {
+        return Math.round((minimumAltitudeFeet + altitude * altitudeRangeFeet) / 10) * 10;
+      }
+      function normalizedAltitude(feet) {
+        return (feet - minimumAltitudeFeet) / altitudeRangeFeet;
+      }
+      function overheadUnits(altitude) {
+        return 0.7 + 2.9 * altitude;
+      }
+      function flightHeight(altitude) {
+        return 12 + 488 * altitude;
+      }
+      function flightHorizon(view, flight) {
+        const levelHorizon = view.height * (view.mode === "chase" ? 0.3 : 0.4);
+        return levelHorizon + perspectiveFocalLength(view) * Math.tan(flight.pitch || 0);
+      }
       const canvas = document.querySelector("canvas");
       const ctx = canvas.getContext("2d", { alpha: false });
       const world = createWorldRenderer();
       const aircraft = createAircraftRenderer();
       const combat = createCombat();
       const takeoff = {
-        x: 8,
-        y: 70,
-        heading: -2.18,
-        altitude: 0.4,
+        ...world.spawn,
+        altitude: normalizedAltitude(5300),
+        verticalSpeed: 0,
+        pitch: 0,
         time: 0,
         speed: 36,
         bank: 0,
@@ -2896,13 +3705,17 @@
       };
       const flight = { ...takeoff };
       combat.reset(flight);
-      const view = { width: 1, height: 1, mode: "overhead" };
+      const view = { width: 1, height: 1, mode: "chase" };
       const cameras = ["overhead", "chase", "cockpit"];
       const viewButtons = [...document.querySelectorAll("[data-view]")];
       const help = document.querySelector("dialog");
       const pauseButton = document.querySelector("#pause");
       const altitudeInput = document.querySelector("#altitude");
       const altitudeOutput = document.querySelector("#alt-target");
+      const climbButton = document.querySelector("#climb");
+      const descendButton = document.querySelector("#descend");
+      const verticalState = document.querySelector("#vertical-state");
+      const flightLevel = document.querySelector("#flight-level");
       const speedDisplay = document.querySelector("#speed");
       const altitudeDisplay = document.querySelector("#alt");
       const headingDisplay = document.querySelector("#heading");
@@ -2926,11 +3739,15 @@
         mouseFire: false,
         firePointer: null,
         powerPointer: null,
+        climbPointer: null,
+        descendPointer: null,
         target: null,
         targetAltitude: flight.altitude,
         lastSteer: -Infinity,
       };
 
+      let flightMode = "free";
+      let timeRate = 1;
       let ready = true;
       let paused = false;
       let rollElapsed = Infinity;
@@ -2942,7 +3759,7 @@
       const tau = 2 * Math.PI;
       const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
       const blend = (value, goal, rate, dt) => value + (goal - value) * (1 - Math.exp(-rate * dt));
-      const altitudeInFeet = (altitude) => Math.round((600 + altitude * 9400) / 10) * 10;
+      let altitudeRepeatDelay = 0;
 
       function resize() {
         const bounds = canvas.getBoundingClientRect();
@@ -2975,12 +3792,10 @@
       function drawPlaceNames() {
         places.hidden = view.mode !== "overhead";
         if (places.hidden) return;
-        const units = 0.82 + 0.82 * flight.altitude;
+        const units = overheadUnits(flight.altitude);
         for (const { place, node } of labels) {
-          let dx = place.x - flight.x;
-          let dy = place.y - flight.y;
-          dx -= world.size * Math.round(dx / world.size);
-          dy -= world.size * Math.round(dy / world.size);
+          const dx = place.x - flight.x;
+          const dy = place.y - flight.y;
           const x = displayWidth * (0.5 + dx / (view.width * units));
           const y = displayHeight * (0.5 + (dy + 10) / (view.height * units));
           node.hidden = x < 8 || x > displayWidth - 12 || y < 7 || y > displayHeight - 24;
@@ -2993,6 +3808,15 @@
 
       function syncControls() {
         const down = combat.down;
+        const free = flightMode === "free";
+        document.querySelector("main").dataset.mode = flightMode;
+        document.querySelector("#switch-mode").textContent = free ? "Start a dogfight" : "Start free flight";
+        document.querySelector("#clock-rate").setAttribute("aria-pressed", String(timeRate === 4));
+        document.querySelector("#clock-rate").hidden = !free || ready;
+        document.querySelector("#hints .pointer-hint").textContent = free
+          ? "Move to steer · ↑ / ↓ change altitude"
+          : "Move to steer · Hold to fire · R to roll";
+        climbButton.disabled = descendButton.disabled = altitudeInput.disabled = paused || down;
         pauseButton.disabled = ready || down;
         pauseButton.classList.toggle("is-paused", paused);
         pauseButton.setAttribute("aria-label", paused ? "Resume flight" : "Pause flight");
@@ -3016,17 +3840,23 @@
           [canvas, input.pointer],
           [fireButton, input.firePointer],
           [powerButton, input.powerPointer],
+          [climbButton, input.climbPointer],
+          [descendButton, input.descendPointer],
         ]) {
           if (id !== null && element.hasPointerCapture(id)) element.releasePointerCapture(id);
         }
         input.pointer = input.firePointer = input.powerPointer = null;
+        input.climbPointer = input.descendPointer = null;
+        altitudeRepeatDelay = 0;
         input.mouseFire = false;
         input.target = null;
         flight.firing = false;
       }
 
-      function launch() {
+      function launch(mode = flightMode) {
         if (!ready) return;
+        flightMode = mode;
+        timeRate = 1;
         ready = false;
         input.lastSteer = flight.time;
         combat.reset(flight);
@@ -3055,7 +3885,18 @@
         clearInput();
         help.showModal();
       }
-      document.querySelector("#launch").addEventListener("click", launch);
+      document.querySelector("#launch").addEventListener("click", () => launch("free"));
+      document.querySelector("#dogfight").addEventListener("click", () => launch("combat"));
+      document.querySelector("#switch-mode").addEventListener("click", () => {
+        flightMode = flightMode === "free" ? "combat" : "free";
+        restart();
+      });
+      document.querySelector("#clock-rate").addEventListener("click", () => {
+        if (flightMode !== "free" || ready) return;
+        timeRate = timeRate === 1 ? 4 : 1;
+        syncControls();
+        canvas.focus({ preventScroll: true });
+      });
       document.querySelector("#fly-again").addEventListener("click", restart);
       document.querySelector("#restart").addEventListener("click", restart);
       pauseButton.addEventListener("click", togglePause);
@@ -3075,12 +3916,77 @@
 
       function updateTargetAltitude(value) {
         input.targetAltitude = clamp(value, 0, 1);
-        altitudeInput.value = String(Math.round(100 * input.targetAltitude));
-        altitudeOutput.value = altitudeInFeet(input.targetAltitude).toLocaleString("en-US") + " ft";
+        const feet = altitudeInFeet(input.targetAltitude);
+        altitudeInput.value = String(feet);
+        altitudeOutput.value = feet.toLocaleString("en-US") + " ft";
         altitudeInput.setAttribute("aria-valuetext", altitudeOutput.value);
       }
-      altitudeInput.addEventListener("input", () => updateTargetAltitude(Number(altitudeInput.value) / 100));
+      function nudgeAltitude(direction, feet) {
+        // Reverse from the current height even if a distant target was selected.
+        const remaining = input.targetAltitude - flight.altitude;
+        const base = direction * remaining < 0 ? flight.altitude : input.targetAltitude;
+        const baseFeet = Math.round(altitudeInFeet(base) / 100) * 100;
+        updateTargetAltitude(normalizedAltitude(baseFeet + direction * feet));
+      }
+      function startAltitudeChange(direction) {
+        if (paused || combat.down || help.open) return;
+        if (ready) launch();
+        nudgeAltitude(direction, 500);
+        altitudeRepeatDelay = 0.28;
+      }
+      function bindAltitudeButton(button, field, direction) {
+        button.addEventListener("pointerdown", (event) => {
+          if (event.button !== 0 || input[field] !== null || button.disabled) return;
+          event.preventDefault();
+          button.setPointerCapture(event.pointerId);
+          input[field] = event.pointerId;
+          startAltitudeChange(direction);
+        });
+        const release = (event) => {
+          if (input[field] === event.pointerId) input[field] = null;
+        };
+        for (const type of ["pointerup", "pointercancel", "lostpointercapture"])
+          button.addEventListener(type, release);
+        // A native keyboard or assistive-technology click has no preceding pointerdown.
+        button.addEventListener("click", (event) => {
+          if (event.detail === 0) startAltitudeChange(direction);
+        });
+      }
+      bindAltitudeButton(climbButton, "climbPointer", 1);
+      bindAltitudeButton(descendButton, "descendPointer", -1);
+      altitudeInput.addEventListener("input", () => {
+        if (paused || combat.down) return;
+        const feet = Number(altitudeInput.value);
+        if (ready) {
+          launch();
+          altitudeInput.focus({ preventScroll: true });
+        }
+        updateTargetAltitude(normalizedAltitude(feet));
+      });
       updateTargetAltitude(flight.altitude);
+
+      function stepAltitude(dt) {
+        const climb = keys.has("ArrowUp") || keys.has("KeyW") || input.climbPointer !== null;
+        const descend = keys.has("ArrowDown") || keys.has("KeyS") || input.descendPointer !== null;
+        const direction = Number(climb) - Number(descend);
+        if (direction) {
+          altitudeRepeatDelay -= dt;
+          if (altitudeRepeatDelay <= 0) {
+            nudgeAltitude(direction, 100);
+            altitudeRepeatDelay += 0.1;
+          }
+        }
+        const remainingFeet = (input.targetAltitude - flight.altitude) * altitudeRangeFeet;
+        const requestedSpeed = clamp(remainingFeet * 4, -1200, 1200);
+        const changeFeet =
+          Math.sign(remainingFeet) * Math.min(Math.abs(remainingFeet), Math.abs(requestedSpeed) * dt);
+        flight.altitude =
+          Math.abs(remainingFeet) < 1
+            ? input.targetAltitude
+            : clamp(flight.altitude + changeFeet / altitudeRangeFeet, 0, 1);
+        flight.verticalSpeed = dt > 0 ? changeFeet / dt : 0;
+        flight.pitch = blend(flight.pitch, (0.24 * flight.verticalSpeed) / 1200, 6, dt);
+      }
 
       function startRoll() {
         if (!paused && !combat.down && rollElapsed >= 0.88) rollElapsed = 0;
@@ -3159,6 +4065,11 @@
           }
           return;
         }
+        if (
+          event.target === altitudeInput &&
+          ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.code)
+        )
+          return;
         if (event.code === "Space" && event.target.closest("button")) return;
         if (
           ![
@@ -3166,6 +4077,8 @@
             "ArrowRight",
             "ArrowUp",
             "ArrowDown",
+            "KeyW",
+            "KeyS",
             "ShiftLeft",
             "ShiftRight",
             "KeyF",
@@ -3186,8 +4099,10 @@
           return;
         }
         if (paused) return;
-        if (ready) launch();
+        if (ready) launch(event.code === "KeyF" ? "combat" : flightMode);
         keys.add(event.code);
+        if (event.code === "ArrowUp" || event.code === "KeyW") startAltitudeChange(1);
+        if (event.code === "ArrowDown" || event.code === "KeyS") startAltitudeChange(-1);
         if (event.code === "KeyR") startRoll();
       });
       window.addEventListener("keyup", (event) => keys.delete(event.code));
@@ -3206,18 +4121,16 @@
             const shortest = Math.atan2(Math.sin(difference), Math.cos(difference));
             if (input.target.distance > 12) requestedTurn = clamp(shortest * 2.3, -1.65, 1.65);
           } else {
-            requestedTurn = input.target.horizontal * 1.65;
+            requestedTurn = Math.abs(input.target.horizontal) > 0.06 ? input.target.horizontal * 1.65 : 0;
           }
-        } else if (flight.time - input.lastSteer > 2) {
+        } else if (flightMode === "combat" && flight.time - input.lastSteer > 2) {
           requestedTurn = 0.08 * Math.sin(flight.time * 0.24);
         }
         flight.turnRate = blend(flight.turnRate, requestedTurn, 5, dt);
         flight.bank = blend(flight.bank, flight.turnRate / 1.65, 5, dt);
         flight.heading = (flight.heading + flight.turnRate * dt + tau) % tau;
 
-        const climbing = Number(keys.has("ArrowUp")) - Number(keys.has("ArrowDown"));
-        if (climbing) updateTargetAltitude(input.targetAltitude + climbing * dt * 0.38);
-        flight.altitude = blend(flight.altitude, input.targetAltitude, 2.4, dt);
+        stepAltitude(dt);
         const fullThrottle = keys.has("ShiftLeft") || keys.has("ShiftRight") || input.powerPointer !== null;
         flight.boost = blend(flight.boost, fullThrottle ? 1 : 0, fullThrottle ? 2.6 : 1.8, dt);
         flight.speed = 36 + flight.boost * 21;
@@ -3226,8 +4139,10 @@
         rollElapsed += dt;
         const rollProgress = Math.min(1, rollElapsed / 0.88);
         flight.roll = rollProgress < 1 ? tau * rollProgress * rollProgress * (3 - 2 * rollProgress) : 0;
-        combat.step(dt, flight, keys.has("KeyF") || input.mouseFire || input.firePointer !== null);
-        flight.firing = combat.firing;
+        if (flightMode === "combat") {
+          combat.step(dt, flight, keys.has("KeyF") || input.mouseFire || input.firePointer !== null);
+          flight.firing = combat.firing;
+        }
         if (combat.down) {
           clearInput();
           syncControls();
@@ -3235,9 +4150,33 @@
         }
       }
 
+      const regionDisplay = document.querySelector("#region");
+      const rangeDisplay = document.querySelector("#range");
+      const homeBearing = document.querySelector("#return-bearing");
+      function updateNavigation() {
+        const dx = flight.x - takeoff.x;
+        const dy = flight.y - takeoff.y;
+        const km = Math.hypot(dx, dy) * 0.00267;
+        const bearing = (Math.round((Math.atan2(-dy, -dx) * 180) / Math.PI) + 450) % 360;
+        const district = world.regionAt(flight.x, flight.y);
+        const range = km.toFixed(1) + " km from start";
+        if (regionDisplay.textContent !== district) regionDisplay.textContent = district;
+        if (rangeDisplay.textContent !== range) rangeDisplay.textContent = range;
+        homeBearing.hidden = km < 1;
+        if (!homeBearing.hidden) homeBearing.textContent = "Return " + String(bearing).padStart(3, "0") + "°";
+      }
       function drawInstruments() {
+        updateNavigation();
         speedDisplay.value = Math.round(flight.speed * 5.2);
-        altitudeDisplay.value = altitudeInFeet(flight.altitude).toLocaleString("en-US");
+        const feet = altitudeInFeet(flight.altitude);
+        altitudeDisplay.value = feet.toLocaleString("en-US");
+        const speed = Math.round(flight.verticalSpeed / 10) * 10;
+        let state = "Level";
+        if (speed) state = (speed > 0 ? "↑ +" : "↓ −") + Math.abs(speed).toLocaleString("en-US") + " ft/s";
+        else if (feet === minimumAltitudeFeet) state = "Minimum";
+        else if (feet === maximumAltitudeFeet) state = "Ceiling";
+        verticalState.textContent = state;
+        flightLevel.dataset.motion = speed > 0 ? "climb" : speed < 0 ? "descend" : "level";
         const degrees = (Math.round((flight.heading * 180) / Math.PI + 90) + 360) % 360;
         headingDisplay.value = String(degrees).padStart(3, "0") + "°";
         healthDisplay.value = Math.round(combat.health) + "%";
@@ -3250,11 +4189,12 @@
         lastFrame = stamp;
         const active = !document.hidden && !help.open && !paused && !combat.down;
         const idling = ready && !reducedMotion.matches;
-        if (active && !ready) step(dt);
-        else if (active && idling) flight.time += dt;
+        if (active && !ready) {
+          for (let n = 0; n < timeRate; n++) step(dt);
+        } else if (active && idling) flight.time += dt;
         if (redraw || (active && (!ready || idling))) {
           world.draw(ctx, view, flight);
-          combat.draw(ctx, view, flight);
+          if (flightMode === "combat") combat.draw(ctx, view, flight);
           aircraft.draw(ctx, view, flight);
           drawPlaceNames();
           if (redraw || flight.time - instrumentTime >= 0.1) {
