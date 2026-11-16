@@ -38,6 +38,7 @@
       button:hover {
         background: #ffffff12;
       }
+      a:focus-visible,
       button:focus-visible,
       input:focus-visible,
       canvas:focus-visible {
@@ -149,6 +150,28 @@
       }
       .tools {
         gap: 8px;
+      }
+      .home-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        min-width: 32px;
+        min-height: 34px;
+        padding: 0 6px;
+        border-radius: 4px;
+        font-size: 12px;
+        text-decoration: none;
+        color: var(--ink);
+      }
+      .home-link:hover {
+        background: #ffffff12;
+      }
+      @media (max-width: 440px) {
+        .home-word,
+        #pause-label {
+          display: none;
+        }
       }
       .tools button {
         height: 34px;
@@ -1001,6 +1024,9 @@
           >
         </div>
         <div class="tools">
+          <a class="home-link" href="../index.html" aria-label="Back to game home" title="Back to game home"
+            ><span aria-hidden="true">←</span><span class="home-word">Home</span></a
+          >
           <button id="pause" aria-label="Pause flight" title="Pause or resume (P)">
             <span class="pause-mark" aria-hidden="true"></span><span id="pause-label">Pause</span>
           </button>
@@ -4052,7 +4078,7 @@
       });
 
       window.addEventListener("keydown", (event) => {
-        if (help.open || event.metaKey || event.ctrlKey || event.altKey) return;
+        if (help.open || event.metaKey || event.ctrlKey || event.altKey || event.target.closest("a")) return;
         if (event.key === "?" && !event.repeat) {
           openHelp();
           event.preventDefault();
@@ -4205,7 +4231,10 @@
         }
         requestAnimationFrame(animate);
       }
-      syncControls();
+      const search = window.location?.search;
+      const startMode = search && new URLSearchParams(search).get("mode");
+      if (startMode === "free" || startMode === "combat") launch(startMode);
+      else syncControls();
       requestAnimationFrame(animate);
     </script>
   </body>

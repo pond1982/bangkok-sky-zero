@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102e31">
+  <title>Bangkok Sky Zero — Fly the Chao Phraya</title>
+  <meta name="description" content="Fly a Mitsubishi A6M Zero over modern Bangkok in a free browser game. Explore the Chao Phraya in pixel art or launch a dogfight above the city.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bangkok Sky Zero">
+  <meta property="og:description" content="A classic Japanese fighter over modern Bangkok. Take a free flight or enter a dogfight in your browser.">
+  <meta property="og:image" content="https://pond1982.github.io/bangkok-sky-zero/assets/sky-zero-key-art.webp">
+  <meta property="og:url" content="https://pond1982.github.io/bangkok-sky-zero/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="assets/wing-icon.png">
+  <link rel="preload" href="assets/barlow-condensed-black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" href="assets/sky-zero-key-art.webp" fetchpriority="high">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body id="top">
+  <a class="skip" href="#main">Skip to game</a>
+  <header class="masthead">
+    <div class="shell masthead-inner">
+      <a class="brand" href="#top" aria-label="Bangkok Sky Zero home">
+        <img src="assets/wing-icon.png" alt="" width="33" height="33">
+        <span>Bangkok Sky Zero</span>
+      </a>
+      <nav class="primary-nav" aria-label="Main navigation">
+        <a class="nav-world" href="#airspace">Airspace</a>
+        <a href="#manual">Flight manual</a>
+        <a class="nav-play" href="outputs/pelagic.html">Play now <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="game-title">
+      <img class="hero-art" src="assets/sky-zero-key-art.webp" alt="" fetchpriority="high" decoding="async">
+      <div class="shell hero-inner">
+        <div class="hero-copy">
+          <h1 id="game-title"><span>Bangkok</span> <em>Sky Zero</em></h1>
+          <p>Take a classic Japanese fighter over modern Bangkok in a pixel-art flight game. Follow the river at your own pace or intercept an enemy aircraft.</p>
+          <div class="launch-options" aria-label="Choose a flight mode">
+            <a class="launch launch-free" href="outputs/pelagic.html?mode=free"><span class="play-icon" aria-hidden="true"></span>Free flight</a>
+            <a class="launch launch-combat" href="outputs/pelagic.html?mode=combat">Dogfight <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="specs">
+      <dl class="shell specs-list" aria-label="Flight specifications">
+        <div><dt>Aircraft</dt><dd>Mitsubishi A6M Zero</dd></div>
+        <div><dt>Departure</dt><dd>Chao Phraya, Bangkok</dd></div>
+        <div><dt>Flight envelope</dt><dd>200–16,000 ft</dd></div>
+        <div><dt>Camera views</dt><dd>Overhead · Chase · Cockpit</dd></div>
+      </dl>
+    </div>
+    <div class="shell field">
+      <section id="airspace" class="airspace" aria-labelledby="airspace-title">
+        <h2 id="airspace-title">The river approach</h2>
+        <p>Lift off over the Chao Phraya, with ICONSIAM on the west bank and the towers of Bang Rak to the east. Stay low to trace the river bends, or climb and head south for the Gulf of Thailand.</p>
+        <figure class="game-still">
+          <img src="assets/flight-deck.webp" alt="In-game pixel-art view of the Zero flying over Bangkok’s riverside skyline" width="1280" height="720" loading="lazy">
+          <figcaption>In-game view <span aria-hidden="true">/</span> Bangkok riverfront</figcaption>
+        </figure>
+      </section>
+      <section id="manual" class="manual" aria-labelledby="manual-title">
+        <h2 id="manual-title">Flight manual</h2>
+        <div class="tabs" role="tablist" aria-label="Flight controls by device" hidden>
+          <button id="kbd-tab" type="button" role="tab" aria-controls="kbd-panel" aria-selected="true">Keyboard &amp; mouse</button>
+          <button id="touch-tab" type="button" role="tab" aria-controls="touch-panel" aria-selected="false" tabindex="-1">Touchscreen</button>
+        </div>
+        <div id="kbd-panel" role="tabpanel" aria-labelledby="kbd-tab">
+          <h3 class="no-script-label">Keyboard &amp; mouse</h3>
+          <dl class="commands">
+            <div><dt>Steer</dt><dd>Move pointer or <kbd>←</kbd> <kbd>→</kbd></dd></div>
+            <div><dt>Climb / descend</dt><dd><kbd>↑</kbd> <kbd>↓</kbd> or <kbd>W</kbd> <kbd>S</kbd></dd></div>
+            <div><dt>Full throttle</dt><dd>Hold <kbd>Shift</kbd></dd></div>
+            <div><dt>Barrel roll</dt><dd><kbd>R</kbd></dd></div>
+            <div><dt>Fire in dogfight</dt><dd>Hold click or <kbd>F</kbd></dd></div>
+            <div><dt>Switch camera</dt><dd><kbd>Space</kbd></dd></div>
+          </dl>
+        </div>
+        <div id="touch-panel" role="tabpanel" aria-labelledby="touch-tab">
+          <h3 class="no-script-label">Touchscreen</h3>
+          <dl class="commands">
+            <div><dt>Steer</dt><dd>Drag across the sky</dd></div>
+            <div><dt>Climb / descend</dt><dd>Tap or hold <b>Climb</b> / <b>Descend</b></dd></div>
+            <div><dt>Full throttle</dt><dd>Hold <b>Power</b></dd></div>
+            <div><dt>Barrel roll</dt><dd>Tap <b>Roll</b></dd></div>
+            <div><dt>Fire in dogfight</dt><dd>Hold <b>Fire</b></dd></div>
+            <div><dt>Switch camera</dt><dd>Tap a camera below the view</dd></div>
+          </dl>
+        </div>
+        <p class="manual-note">For longer trips in free flight, tap <b>4× time</b> beside the distance readout.</p>
+      </section>
+    </div>
+  </main>
+  <footer>
+    <div class="shell footer-inner">
+      <a class="brand footer-brand" href="#top"><img src="assets/wing-icon.png" alt="" width="28" height="28">Bangkok Sky Zero</a>
+      <a class="source" href="https://github.com/pond1982/bangkok-sky-zero">Source on GitHub <span aria-hidden="true">↗</span></a>
+    </div>
+  </footer>
+  <script>
+    const tabList = document.querySelector(".tabs");
+    const tabs = Array.from(tabList.querySelectorAll('[role="tab"]'));
+    const panels = tabs.map(tab => document.getElementById(tab.getAttribute("aria-controls")));
+    function chooseDevice(index) {
+      tabs.forEach((tab, i) => {
+        tab.setAttribute("aria-selected", String(index === i));
+        tab.tabIndex = i === index ? 0 : -1;
+        panels[i].hidden = i !== index;
+      });
+    }
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => chooseDevice(index));
+      tab.addEventListener("keydown", event => {
+        let next;
+        if (event.key === "Home") next = 0;
+        else if (event.key === "End") next = tabs.length - 1;
+        else if (event.key === "ArrowLeft" || event.key === "ArrowRight") next = 1 - index;
+        else return;
+        event.preventDefault();
+        chooseDevice(next);
+        tabs[next].focus();
+      });
+    });
+    chooseDevice(matchMedia("(pointer: coarse)").matches ? 1 : 0);
+    tabList.hidden = false;
+    document.querySelectorAll(".no-script-label").forEach(label => label.hidden = true);
+  </script>
+</body>
+</html>
