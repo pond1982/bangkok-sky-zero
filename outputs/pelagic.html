@@ -1,0 +1,1847 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta name="theme-color" content="#172026" />
+    <title>Pelagic — Archipelago flight simulator</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #f2f2e8;
+        --muted: #b0bdbd;
+        --gold: #ffd174;
+        --border: #3d4a4d;
+        --surface: #172026;
+        --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
+        font-family: Barlow, "Helvetica Neue", Arial, sans-serif;
+        background: var(--surface);
+        color: var(--ink);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      button,
+      input {
+        font: inherit;
+      }
+      button {
+        background: transparent;
+        color: var(--ink);
+        border: 1px solid transparent;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      button:hover {
+        background: #ffffff12;
+      }
+      button:focus-visible,
+      input:focus-visible,
+      canvas:focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: -3px;
+      }
+      main {
+        height: 100vh;
+        height: 100dvh;
+        min-height: 290px;
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+      }
+      header,
+      footer {
+        position: relative;
+        z-index: 1;
+        background: var(--surface);
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 2.25%;
+        gap: 12px;
+        min-height: 58px;
+        border-bottom: 1px solid #596368;
+      }
+      .identity,
+      .tools,
+      .view-options,
+      .camera,
+      .instruments,
+      .hint {
+        display: flex;
+        align-items: center;
+      }
+      .identity {
+        gap: 12px;
+      }
+      .mark {
+        width: 32px;
+        height: 28px;
+        flex: none;
+        background: var(--gold);
+        clip-path: polygon(
+          0 47%,
+          15% 47%,
+          15% 36%,
+          31% 36%,
+          31% 24%,
+          48% 24%,
+          48% 12%,
+          85% 12%,
+          85% 20%,
+          67% 20%,
+          67% 31%,
+          54% 31%,
+          54% 43%,
+          40% 43%,
+          40% 55%,
+          28% 55%,
+          28% 70%,
+          67% 70%,
+          67% 58%,
+          80% 58%,
+          80% 45%,
+          100% 45%,
+          100% 58%,
+          91% 58%,
+          91% 71%,
+          78% 71%,
+          78% 83%,
+          17% 83%,
+          17% 72%,
+          8% 72%,
+          8% 60%,
+          0 60%
+        );
+      }
+      h1 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: -0.07em;
+        font-weight: 780;
+        font-style: italic;
+      }
+      .subhead {
+        margin-left: 4px;
+        padding-left: 14px;
+        border-left: 1px solid var(--border);
+      }
+      .label,
+      .subhead,
+      .hint,
+      kbd,
+      .meter-unit,
+      .status {
+        font-family: var(--mono);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .subhead,
+      .label,
+      .meter-unit {
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .tools {
+        gap: 8px;
+      }
+      .tools button {
+        height: 34px;
+        padding: 0 11px;
+        font-size: 12px;
+        font-weight: 540;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border-radius: 4px;
+      }
+      .tools button:last-child {
+        border-color: var(--border);
+      }
+      .pause-mark {
+        display: inline-block;
+        width: 8px;
+        height: 10px;
+        border-left: 3px solid;
+        border-right: 3px solid;
+      }
+      .is-paused .pause-mark {
+        width: 0;
+        height: 0;
+        border: 5px solid transparent;
+        border-right: 0;
+        border-left: 8px solid;
+      }
+      .key-icon {
+        font: bold 11px var(--mono);
+        border: 1px solid #a8b5b6;
+        width: 16px;
+        height: 15px;
+        border-radius: 3px;
+      }
+      .stage {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+        background: #286baa;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        image-rendering: pixelated;
+        touch-action: none;
+        cursor: crosshair;
+      }
+      .hint {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        padding: 6px 10px;
+        border-radius: 2px;
+        color: #fffdf0;
+        background: #13252ed9;
+        pointer-events: none;
+        font-size: 9px;
+        letter-spacing: 0.065em;
+      }
+      .touch-hint {
+        display: none;
+      }
+      @media (pointer: coarse) {
+        .pointer-hint {
+          display: none;
+        }
+        .touch-hint {
+          display: inline;
+        }
+      }
+      .status {
+        position: absolute;
+        left: 50%;
+        top: 17px;
+        transform: translateX(-50%);
+        padding: 7px 10px;
+        background: #172026ec;
+        color: var(--gold);
+        font-size: 10px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      footer {
+        min-height: 74px;
+        padding: 12px 2.25%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        border-top: 1px solid #48575c;
+      }
+      .camera {
+        gap: 15px;
+      }
+      .view-options {
+        padding: 3px;
+        gap: 2px;
+        border: 1px solid var(--border);
+        border-radius: 5px;
+      }
+      .view-options button {
+        padding: 7px 12px;
+        border-radius: 3px;
+        font-weight: 550;
+        font-size: 12px;
+      }
+      .view-options button[aria-pressed="true"] {
+        background: var(--gold);
+        color: #202323;
+      }
+      .instruments {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(76px, auto));
+        gap: clamp(16px, 3.2vw, 56px);
+      }
+      .instrument {
+        display: grid;
+        gap: 4px;
+      }
+      .instrument .label {
+        font-size: 9px;
+      }
+      .instrument output {
+        font: 16px var(--mono);
+        font-variant-numeric: tabular-nums;
+      }
+      .meter-unit {
+        font-size: 10px;
+        letter-spacing: 0;
+      }
+      dialog {
+        width: min(384px, calc(100vw - 28px));
+        max-height: calc(100dvh - 20px);
+        overflow: auto;
+        padding: 22px;
+        background: var(--surface);
+        border: 1px solid #59666b;
+        border-radius: 7px;
+        color: var(--ink);
+        box-shadow: 0 12px 56px #08131a66;
+      }
+      dialog::backdrop {
+        background: #06131a66;
+      }
+      .dialog-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      h2 {
+        font-size: 20px;
+        letter-spacing: -0.04em;
+        margin: 0;
+      }
+      .close {
+        font-size: 23px;
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+      }
+      dl {
+        display: grid;
+        gap: 12px;
+        margin: 0;
+      }
+      dl div {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 6px;
+      }
+      dt,
+      dd {
+        font-size: 12px;
+        margin: 0;
+      }
+      dd {
+        text-align: right;
+        color: var(--muted);
+      }
+      kbd {
+        color: var(--ink);
+        letter-spacing: 0;
+        font-size: 11px;
+      }
+      .alt-setting {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 11px;
+        border-top: 1px solid var(--border);
+        margin-top: 20px;
+        padding-top: 17px;
+        font-size: 13px;
+      }
+      .alt-setting input {
+        grid-column: span 2;
+        width: 100%;
+        accent-color: var(--gold);
+        margin: 0;
+      }
+      .alt-setting output {
+        color: var(--gold);
+        font: 12px var(--mono);
+      }
+      @media (max-width: 720px) {
+        .subhead {
+          display: none;
+        }
+        .camera {
+          gap: 8px;
+        }
+        .camera > .label {
+          display: none;
+        }
+        .instruments {
+          grid-template-columns: repeat(3, auto);
+          gap: 14px;
+        }
+        .view-options button {
+          padding: 7px 9px;
+        }
+        .instrument output {
+          font-size: 14px;
+        }
+      }
+      @media (max-width: 540px) {
+        header {
+          padding: 0 12px;
+          min-height: 50px;
+        }
+        .identity {
+          gap: 7px;
+        }
+        .mark {
+          width: 27px;
+        }
+        .tools {
+          gap: 2px;
+        }
+        footer {
+          padding: 9px 14px max(10px, env(safe-area-inset-bottom));
+          display: grid;
+          gap: 10px;
+        }
+        .camera,
+        .view-options {
+          width: 100%;
+        }
+        .view-options button {
+          flex: 1;
+        }
+        .instruments {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .instrument {
+          display: flex;
+          align-items: baseline;
+          gap: 4px;
+        }
+        .hint {
+          bottom: 10px;
+          font-size: 8px;
+        }
+      }
+      @media (max-height: 480px) and (min-width: 541px) {
+        header {
+          min-height: 38px;
+        }
+        footer {
+          min-height: 45px;
+          padding-top: 4px;
+          padding-bottom: 4px;
+        }
+        .hint {
+          bottom: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main aria-label="Pelagic flight simulator">
+      <header>
+        <div class="identity">
+          <span class="mark" aria-hidden="true"></span>
+          <h1>Pelagic</h1>
+          <span class="subhead">Archipelago flight simulator</span>
+        </div>
+        <div class="tools">
+          <button id="pause" aria-label="Pause flight" title="Pause or resume (P)">
+            <span class="pause-mark" aria-hidden="true"></span><span id="pause-label">Pause</span>
+          </button>
+          <button id="controls" aria-haspopup="dialog" title="Flight controls (?)">
+            <span class="key-icon" aria-hidden="true">?</span>Controls
+          </button>
+        </div>
+      </header>
+      <section class="stage" aria-label="Flight view">
+        <canvas
+          tabindex="0"
+          aria-label="Flight simulation. Use left and right arrows to turn, up and down to climb and descend, R to roll, Shift to boost, and Space to switch views."
+          >This simulator requires Canvas 2D.</canvas
+        >
+        <div class="status" id="paused" role="status" hidden>Flight paused</div>
+        <div class="hint">
+          <span class="pointer-hint">Move to steer · Click to roll · Hold to boost</span
+          ><span class="touch-hint">Drag to steer · Tap to roll · Hold to boost</span>
+        </div>
+      </section>
+      <footer>
+        <div class="camera">
+          <span class="label" aria-hidden="true">Camera</span>
+          <div class="view-options" role="group" aria-label="Camera view">
+            <button data-view="overhead" aria-pressed="true">Overhead</button>
+            <button data-view="chase" aria-pressed="false">Chase</button>
+            <button data-view="cockpit" aria-pressed="false">Cockpit</button>
+          </div>
+        </div>
+        <div class="instruments" aria-label="Flight instruments">
+          <div class="instrument">
+            <span class="label">Speed</span>
+            <div><output id="speed" aria-live="off">218</output> <span class="meter-unit">kt</span></div>
+          </div>
+          <div class="instrument">
+            <span class="label">Alt</span>
+            <div><output id="alt" aria-live="off">4,360</output> <span class="meter-unit">ft</span></div>
+          </div>
+          <div class="instrument">
+            <span class="label">Hdg</span>
+            <div><output id="heading" aria-live="off">090°</output></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+    <dialog aria-labelledby="help-title">
+      <div class="dialog-header">
+        <h2 id="help-title">Flight controls</h2>
+        <button class="close" aria-label="Close controls" autofocus>×</button>
+      </div>
+      <dl>
+        <div>
+          <dt>Steer</dt>
+          <dd>Move pointer, drag, or <kbd>← →</kbd></dd>
+        </div>
+        <div>
+          <dt>Climb / descend</dt>
+          <dd><kbd>↑ ↓</kbd> or set altitude below</dd>
+        </div>
+        <div>
+          <dt>Barrel roll</dt>
+          <dd>Click, tap, or <kbd>R</kbd></dd>
+        </div>
+        <div>
+          <dt>Afterburner</dt>
+          <dd>Hold pointer or <kbd>Shift</kbd></dd>
+        </div>
+        <div>
+          <dt>Change camera</dt>
+          <dd><kbd>Space</kbd></dd>
+        </div>
+        <div>
+          <dt>Pause / resume</dt>
+          <dd><kbd>P</kbd></dd>
+        </div>
+      </dl>
+      <label class="alt-setting"
+        >Target altitude <output id="alt-target">4,360 ft</output>
+        <input id="altitude" aria-label="Target altitude" type="range" min="0" max="100" value="40" />
+      </label>
+    </dialog>
+    <script>
+      "use strict";
+      // One repeatable height field drives the overhead map and both perspective cameras.
+      function createWorldRenderer() {
+        const size = 1024;
+        const mask = size - 1;
+        const count = size * size;
+        const paint = new Uint8Array(count);
+        const relief = new Uint8Array(count);
+        const coast = new Float32Array(count);
+        const index = (x, y) => ((y & mask) << 10) + (x & mask);
+        const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+
+        let seed = 72619;
+        function random() {
+          seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+          return seed / 4294967296;
+        }
+
+        // The map and noise lattices wrap at the same seam, in both directions.
+        function lattice(n) {
+          const values = Float32Array.from({ length: n * n }, random);
+          const m = n - 1;
+          return (x, y) => {
+            const u = (x * n) / size;
+            const v = (y * n) / size;
+            const ix = Math.floor(u);
+            const iy = Math.floor(v);
+            let dx = u - ix;
+            let dy = v - iy;
+            dx *= dx * (3 - 2 * dx);
+            dy *= dy * (3 - 2 * dy);
+            const a = (iy & m) * n;
+            const b = ((iy + 1) & m) * n;
+            const l = ix & m;
+            const r = (ix + 1) & m;
+            const top = values[a + l] + (values[a + r] - values[a + l]) * dx;
+            const bottom = values[b + l] + (values[b + r] - values[b + l]) * dx;
+            return top + (bottom - top) * dy;
+          };
+        }
+        const swells = lattice(16);
+        const coves = lattice(32);
+        const dunes = lattice(64);
+        const ripples = lattice(128);
+
+        const hex = [
+          "#23568e",
+          "#26639c",
+          "#2b6ea5",
+          "#317bae",
+          "#398bb7",
+          "#469ebe",
+          "#59b7c7",
+          "#76cfcb",
+          "#98ded4",
+          "#c3efe3",
+          "#ecfaf0",
+          "#f8fded",
+          "#d3b886",
+          "#e7cd91",
+          "#f4dda2",
+          "#f9e7b6",
+          "#a9be64",
+          "#86b45b",
+          "#73ac55",
+          "#5f9f50",
+          "#4e934b",
+          "#428748",
+          "#357b49",
+          "#2c6d45",
+          "#215e43",
+          "#194f40",
+          "#659d55",
+          "#87b45d",
+          "#b2c572",
+          "#a09e84",
+          "#817e73",
+          "#666b68",
+          "#c0ba97",
+          "#315f42",
+          "#3e864d",
+          "#52994f",
+        ];
+        function packed(r, g, b) {
+          return ((255 << 24) | (b << 16) | (g << 8) | r) >>> 0;
+        }
+        const rgb = hex.map((value) => [
+          parseInt(value.slice(1, 3), 16),
+          parseInt(value.slice(3, 5), 16),
+          parseInt(value.slice(5, 7), 16),
+        ]);
+        const palette = rgb.map((color) => packed(...color));
+
+        // Overlapping headlands leave open channels between distinct island groups.
+        const islands = [
+          [-167, 142, 145, 86, -0.25],
+          [-72, 168, 82, 75, 0.3],
+          [-233, 74, 49, 79, -0.6],
+          [112, -93, 83, 43, -0.49],
+          [72, -56, 35, 24, -0.4],
+          [171, -118, 40, 52, 0.25],
+          [208, 57, 27, 14, -0.4],
+          [226, 45, 10, 8, 0],
+          [-83, -87, 19, 12, 0.45],
+          [347, 225, 117, 73, -0.6],
+          [402, 163, 58, 83, 0.32],
+          [285, 275, 33, 41, 0.45],
+          [-372, -245, 122, 72, 0.5],
+          [-305, -234, 73, 62, -0.15],
+          [-246, -184, 34, 23, 0.4],
+          [26, -337, 92, 64, -0.3],
+          [85, -367, 69, 32, 0.6],
+          [-85, -314, 32, 20, -0.65],
+          [-398, 403, 77, 95, 0.42],
+          [-333, 462, 69, 43, 0.25],
+          [125, 433, 77, 57, -0.38],
+          [163, 392, 31, 34, 0.22],
+          [59, 465, 26, 18, 0],
+          [474, -262, 87, 39, -0.73],
+          [434, -221, 26, 28, 0],
+          [-429, -69, 34, 22, -0.4],
+          [-329, 299, 12, 8, 0.2],
+          [-271, 365, 18, 13, -0.5],
+          [294, -367, 30, 15, 0.4],
+        ];
+        coast.fill(-2.2);
+        for (const [cx, cy, rx, ry, angle] of islands) {
+          const cos = Math.cos(angle);
+          const sin = Math.sin(angle);
+          const extent = Math.ceil(Math.max(rx, ry) * 1.87);
+          for (let dy = -extent; dy <= extent; dy++) {
+            for (let dx = -extent; dx <= extent; dx++) {
+              const u = (dx * cos + dy * sin) / rx;
+              const v = (dy * cos - dx * sin) / ry;
+              const h = 1 - Math.sqrt(u * u + v * v);
+              const i = index(cx + dx, cy + dy);
+              if (h > coast[i]) coast[i] = h;
+            }
+          }
+        }
+        for (let y = 0; y < size; y++) {
+          for (let x = 0; x < size; x++) {
+            const i = y * size + x;
+            const broad = swells(x, y);
+            const mid = coves(x, y);
+            const fine = dunes(x, y);
+            const micro = ripples(x, y);
+            const jitter = random();
+            const h =
+              coast[i] + (broad - 0.5) * 0.41 + (mid - 0.5) * 0.31 + (fine - 0.5) * 0.18 + (micro - 0.5) * 0.08;
+            coast[i] = h;
+            let c;
+            if (h < -0.055) {
+              const water = h + (fine - 0.5) * 0.08 + jitter * 0.016;
+              if (water < -0.85) {
+                const patches = broad * 0.72 + mid * 0.28;
+                c = patches < 0.23 ? 0 : patches < 0.63 ? 1 : 2;
+              } else if (water < -0.52) c = 2;
+              else if (water < -0.33) c = 3;
+              else if (water < -0.21) c = 4;
+              else if (water < -0.133) c = 5;
+              else if (water < -0.093) c = 6;
+              else c = 7;
+              // Broken whitecaps run along the outer reef in small wave trains.
+              const crest = Math.abs(h + 0.125 + 0.038 * Math.sin(x * 0.09 + y * 0.17));
+              if (crest < 0.018 && jitter + 0.6 * micro > 1.02) c = 8 + (jitter > 0.82);
+            } else if (h < 0.018) {
+              const crest = h + (micro - 0.5) * 0.04 + jitter * 0.048;
+              c = crest < -0.005 ? 7 : crest < 0.019 ? 8 : jitter < 0.65 ? 10 : 9;
+            } else if (h < 0.12 + mid * 0.045) {
+              c = h < 0.04 ? 15 : 14;
+              if (jitter < 0.16 && fine + jitter < 0.65) c = 13;
+              if (jitter < 0.025 && mid > 0.68) c = 12;
+              relief[i] = 1 + (h > 0.09);
+            } else {
+              const edge = 0.12 + mid * 0.045;
+              const hill = h * (14 + 16 * mid) + Math.max(0, h - 0.5) * 18;
+              relief[i] = 2 + Math.floor(hill / 2.4) * 2;
+              const meadow = broad * 0.55 + fine * 0.31 + micro * 0.14;
+              if (h < edge + 0.022) c = 16;
+              else if (h < edge + 0.075) c = meadow > 0.51 ? 17 : 18;
+              else c = meadow < 0.35 ? 20 : meadow < 0.62 ? 19 : 18;
+              if (h > 0.58 && fine > 0.67 && mid > 0.54) {
+                c = micro > 0.55 ? 32 : micro > 0.3 ? 29 : 30;
+              }
+            }
+            paint[i] = c;
+          }
+        }
+
+        // Low escarpments and dunes get sharp pixel edges from their sun-facing slopes.
+        for (let y = 0; y < size; y++) {
+          for (let x = 0; x < size; x++) {
+            const i = index(x, y);
+            if (relief[i] < 3) continue;
+            const rise = relief[i] - relief[index(x - 1, y - 2)];
+            if (rise < 0 && paint[i] >= 17 && paint[i] <= 20) {
+              paint[i] += Math.min(3, -rise);
+            } else if (rise > 0 && paint[i] >= 18 && paint[i] <= 20) paint[i]--;
+          }
+        }
+
+        // Tiny tree crowns form groves. Each has a cast shadow, a dark rim and a lit cap.
+        for (let attempt = 0; attempt < 42000; attempt++) {
+          const x = Math.floor(random() * size);
+          const y = Math.floor(random() * size);
+          const center = index(x, y);
+          const grove = coves(x + 83, y - 17) * 0.6 + dunes(x + 31, y + 61) * 0.4;
+          if (coast[center] < 0.19 || grove < 0.36 || paint[center] === 30) continue;
+          if (grove < 0.51 && random() < 0.87) continue;
+          const r = 1.7 + random() * 3.1;
+          const stretch = 0.78 + random() * 0.36;
+          const light = random();
+          const base = Math.floor(3 + Math.max(0, coast[center]) * 18);
+          for (let dy = -Math.ceil(r); dy <= Math.ceil(r) + 2; dy++) {
+            for (let dx = -Math.ceil(r); dx <= Math.ceil(r) + 3; dx++) {
+              const i = index(x + dx, y + dy);
+              if (coast[i] < 0.14) continue;
+              const distance = dx * dx + (dy * dy) / (stretch * stretch);
+              if (distance < r * r) {
+                const lighting = (dx * 0.6 + dy * 0.8) / r + (distance / (r * r)) * 0.38;
+                paint[i] =
+                  lighting < -0.27
+                    ? light > 0.67
+                      ? 27
+                      : 26
+                    : lighting < 0.15
+                      ? 35
+                      : lighting < 0.57
+                        ? 34
+                        : lighting < 0.91
+                          ? 23
+                          : 24;
+                relief[i] = Math.max(relief[i], base + Math.ceil(r * 1.7 - distance / r));
+              } else if (paint[i] >= 17 && paint[i] <= 20 && (dx - 2) ** 2 + (dy - 2) ** 2 < r * r) {
+                paint[i] = 33;
+              }
+            }
+          }
+        }
+
+        // Place short, wind-aligned crests throughout the open water.
+        for (let i = 0; i < 9200; i++) {
+          const x = Math.floor(random() * size);
+          const y = Math.floor(random() * size);
+          if (coast[index(x, y)] > -0.17) continue;
+          const baseColor = paint[index(x, y)];
+          const length = 1 + Math.floor(random() * 4);
+          const bright = random();
+          for (let k = 0; k < length; k++) {
+            const p = index(x + k, y + Math.floor(k * 0.34));
+            if (coast[p] < -0.12)
+              paint[p] =
+                bright > 0.976 ? 10 : bright > 0.91 ? 8 : Math.min(7, baseColor + (bright > 0.63 ? 3 : 1));
+          }
+        }
+        const map = document.createElement("canvas");
+        map.width = map.height = size;
+        const mapContext = map.getContext("2d");
+        const texture = mapContext.createImageData(size, size);
+        const pixels = new Uint32Array(texture.data.buffer);
+        for (let i = 0; i < count; i++) pixels[i] = palette[paint[i]];
+        mapContext.putImageData(texture, 0, 0);
+
+        // Bake tiny cumulus sprites with separate masks for their shadows on the water.
+        function cloudSprite(w, h) {
+          const cloud = document.createElement("canvas");
+          const shade = document.createElement("canvas");
+          cloud.width = shade.width = w;
+          cloud.height = shade.height = h;
+          const c = cloud.getContext("2d");
+          const s = shade.getContext("2d");
+          const data = c.createImageData(w, h);
+          const shadow = s.createImageData(w, h);
+          const tops = new Float32Array(w * h);
+          const lobes = 6 + Math.floor(w / 9);
+          for (let j = 0; j < lobes; j++) {
+            const t = (j + 0.5) / lobes;
+            const cx = 6 + t * (w - 12);
+            const cy = h * 0.57 - Math.sin(t * 3.5) * h * 0.13 + (random() - 0.5) * h * 0.17;
+            const r = h * (0.12 + 0.27 * Math.sin(Math.PI * t)) * (0.76 + random() * 0.32);
+            for (let y = 0; y < h; y++)
+              for (let x = 0; x < w; x++) {
+                const dx = (x - cx) / 1.08;
+                const dy = y - cy;
+                const zz = r * r - dx * dx - dy * dy;
+                if (zz <= 0) continue;
+                const z = Math.sqrt(zz);
+                const i = y * w + x;
+                if (z <= tops[i]) continue;
+                tops[i] = z;
+                const lit = (z * 0.68 - dx * 0.31 - dy * 0.64) / r + random() * 0.075;
+                const tints = [
+                  [133, 168, 189],
+                  [161, 193, 206],
+                  [196, 217, 223],
+                  [231, 240, 236],
+                  [253, 253, 236],
+                ];
+                const tint = tints[lit < 0.15 ? 0 : lit < 0.32 ? 1 : lit < 0.47 ? 2 : lit < 0.62 ? 3 : 4];
+                data.data.set([...tint, 252], i * 4);
+                shadow.data.set([17, 57, 93, 78], i * 4);
+              }
+          }
+          c.putImageData(data, 0, 0);
+          s.putImageData(shadow, 0, 0);
+          return { cloud, shade, w, h };
+        }
+        const clouds = [cloudSprite(41, 23), cloudSprite(62, 36), cloudSprite(80, 37), cloudSprite(27, 17)];
+        const cloudPositions = [
+          [-129, -73, 0],
+          [239, 84, 1],
+          [-304, 138, 2],
+          [128, 280, 3],
+          [382, -263, 2],
+          [-389, -326, 1],
+          [-34, 453, 2],
+          [367, 390, 0],
+          [-69, -296, 3],
+        ];
+
+        function overhead(ctx, view, flight) {
+          const { width: w, height: h } = view;
+          const scale = 0.82 + 0.82 * flight.altitude;
+          const left = flight.x - (w * scale) / 2;
+          const top = flight.y - (h * scale) / 2;
+          const x0 = Math.floor(left / size);
+          const y0 = Math.floor(top / size);
+          for (let ty = y0; ty <= Math.floor((top + h * scale) / size); ty++) {
+            for (let tx = x0; tx <= Math.floor((left + w * scale) / size); tx++) {
+              const x = Math.round((tx * size - left) / scale);
+              const y = Math.round((ty * size - top) / scale);
+              const right = Math.round(((tx + 1) * size - left) / scale);
+              const bottom = Math.round(((ty + 1) * size - top) / scale);
+              ctx.drawImage(map, x, y, right - x, bottom - y);
+            }
+          }
+          // A few moving highlights keep the sea alive between baked wave trains.
+          const grid = 38;
+          const t = flight.time;
+          for (let j = Math.floor(top / grid); j <= Math.floor((top + h * scale) / grid); j++) {
+            for (let k = Math.floor(left / grid); k <= Math.floor((left + w * scale) / grid); k++) {
+              const hash = Math.imul(k, 92837111) ^ Math.imul(j, 689287499);
+              const phase = ((hash >>> 0) / 4294967296) * 26;
+              const shimmer = Math.sin(t * 2.1 + phase);
+              if (shimmer < 0.42) continue;
+              const wx = (k + ((hash >>> 14) % 100) / 105) * grid + shimmer;
+              const wy = (j + ((hash >>> 1) % 100) / 105) * grid;
+              if (coast[index(Math.floor(wx), Math.floor(wy))] > -0.05) continue;
+              const x = Math.round((wx - left) / scale);
+              const y = Math.round((wy - top) / scale);
+              ctx.fillStyle = shimmer > 0.91 ? "#d6f1e7" : "#80cad5";
+              ctx.fillRect(x, y, Math.max(1, Math.round((shimmer * 3) / scale)), 1);
+            }
+          }
+          for (const [cx, cy, kind] of cloudPositions) {
+            const sprite = clouds[kind];
+            const cloudX = cx + flight.time * 1.2;
+            const cloudY = cy + flight.time * 0.36;
+            const dx = cloudX - flight.x;
+            const dy = cloudY - flight.y;
+            const wrapX = dx - size * Math.round(dx / size);
+            const wrapY = dy - size * Math.round(dy / size);
+            const x = Math.round(w / 2 + wrapX / scale);
+            const y = Math.round(h / 2 + wrapY / scale);
+            const cw = Math.round(sprite.w / scale);
+            const ch = Math.round(sprite.h / scale);
+            if (x + cw < -28 || y + ch < -28 || x > w + 28 || y > h + 28) continue;
+            ctx.drawImage(sprite.shade, x + Math.round(11 / scale), y + Math.round(17 / scale), cw, ch);
+            const parallax = 0.026 + flight.altitude * 0.032;
+            ctx.drawImage(
+              sprite.cloud,
+              Math.round(x + wrapX * parallax),
+              Math.round(y + wrapY * parallax),
+              cw,
+              ch,
+            );
+          }
+        }
+
+        // Sample the same landscape in depth order. A column's silhouette clips
+        // distant pixels, so islands and their tree canopies rise above the water.
+        const haze = [153, 198, 205];
+        const fogBands = Array.from({ length: 32 }, (_, n) => {
+          const f = n / 31;
+          return rgb.map((color) => packed(...color.map((v, j) => Math.round(v + (haze[j] - v) * f))));
+        });
+        let ground, groundPixels, columns;
+        let groundCanvas, groundContext;
+        function perspective(ctx, view, flight, padX = 0, padY = 0) {
+          const w = view.width + 2 * padX;
+          const h = view.height + 2 * padY;
+          const chase = view.mode === "chase";
+          const skyHeight = view.height * (chase ? 0.3 : 0.4);
+          const horizon = padY + skyHeight;
+          const bank = clamp(flight.bank || 0, -1, 1) * 0.08;
+          const cos = Math.cos(flight.heading),
+            sin = Math.sin(flight.heading);
+          const cameraX = flight.x - (chase ? 56 * cos : 0);
+          const cameraY = flight.y - (chase ? 56 * sin : 0);
+          const cameraZ = 43 + flight.altitude * 109;
+          const focal = view.height * 1.17;
+
+          ctx.fillStyle = "#a1cbd0";
+          ctx.fillRect(0, 0, w, h);
+          ctx.fillStyle = "#478eba";
+          ctx.fillRect(0, 0, w, padY);
+          for (let s = 0; s < 28; s++) {
+            const t = s / 27;
+            ctx.fillStyle =
+              "rgb(" +
+              Math.round(71 + 88 * t) +
+              "," +
+              Math.round(142 + 59 * t) +
+              "," +
+              Math.round(186 + 22 * t) +
+              ")";
+            ctx.fillRect(0, padY + Math.floor((skyHeight * s) / 28), w, Math.ceil(skyHeight / 28) + 1);
+          }
+          for (let n = 0; n < 18; n++) {
+            const a = (n * Math.PI) / 9 + 0.035 * Math.sin(n * 17) + flight.time * 0.001;
+            const dx = Math.cos(a) * cos + Math.sin(a) * sin;
+            if (dx < 0.42) continue;
+            const lateral = Math.sin(a) * cos - Math.cos(a) * sin;
+            const x = w * 0.5 + (focal * lateral) / dx;
+            const cloud = clouds[(n * 7) % clouds.length];
+            const shrink = (view.height / 330) * (0.53 + 0.23 * (1 + Math.sin(n * 8)));
+            const y =
+              horizon - view.height * (0.055 + 0.095 * (0.5 + 0.5 * Math.sin(n * 11))) - (x - w * 0.5) * bank;
+            ctx.drawImage(
+              cloud.cloud,
+              Math.round(x),
+              Math.round(y),
+              Math.ceil(cloud.w * shrink),
+              Math.ceil(cloud.h * shrink * 0.77),
+            );
+          }
+          if (!ground || ground.width !== w || ground.height !== h) {
+            groundCanvas = document.createElement("canvas");
+            groundCanvas.width = w;
+            groundCanvas.height = h;
+            groundContext = groundCanvas.getContext("2d");
+            ground = groundContext.createImageData(w, h);
+            groundPixels = new Uint32Array(ground.data.buffer);
+            columns = new Int32Array(w);
+          }
+          groundPixels.fill(0);
+          columns.fill(h);
+          const near = chase ? Math.max(5, ((cameraZ - 43) * focal) / (h - horizon + 1)) : 5;
+          for (let depth = near; depth < 2700; depth += 1.1 + depth * 0.019) {
+            const unit = depth / focal;
+            const left = -w * 0.5 * unit;
+            let wx = cameraX + cos * depth - sin * left;
+            let wy = cameraY + sin * depth + cos * left;
+            const dx = -sin * unit,
+              dy = cos * unit;
+            const fog = clamp((depth - 70) / 1920, 0, 1);
+            const colors = fogBands[Math.round(Math.sqrt(fog) * 31)];
+            for (let x = 0; x < w; x++, wx += dx, wy += dy) {
+              const i = index(Math.floor(wx), Math.floor(wy));
+              const y = clamp(Math.floor(horizon + (cameraZ - relief[i]) / unit - (x - w * 0.5) * bank), 0, h);
+              const bottom = columns[x];
+              if (y >= bottom) continue;
+              const color = colors[paint[i]];
+              for (let row = y; row < bottom; row++) groundPixels[row * w + x] = color;
+              columns[x] = y;
+            }
+          }
+          // Close the last few pixels between visible water and the optical horizon.
+          for (let x = 0; x < w; x++) {
+            const y = Math.max(0, Math.floor(horizon - (x - w * 0.5) * bank));
+            for (let row = y; row < columns[x]; row++) groundPixels[row * w + x] = fogBands[31][0];
+          }
+          groundContext.putImageData(ground, 0, 0);
+          ctx.drawImage(groundCanvas, 0, 0);
+        }
+
+        // Rotate the outside world around the sightline. Extend the projection past
+        // every corner before the turn, preserving the neutral camera's focal length.
+        let rollCanvas, rollContext;
+        function cockpitRoll(ctx, view, flight) {
+          const { width, height } = view;
+          const eyeX = Math.round(width * 0.5);
+          const eyeY = Math.round(height * 0.47);
+          const radius = Math.ceil(Math.hypot(Math.max(eyeX, width - eyeX), Math.max(eyeY, height - eyeY))) + 2;
+          const padX = radius - Math.min(eyeX, width - eyeX);
+          const padY = radius - Math.min(eyeY, height - eyeY);
+          const w = width + 2 * padX,
+            h = height + 2 * padY;
+          if (!rollCanvas) {
+            rollCanvas = document.createElement("canvas");
+            rollContext = rollCanvas.getContext("2d");
+          }
+          if (rollCanvas.width !== w || rollCanvas.height !== h) {
+            rollCanvas.width = w;
+            rollCanvas.height = h;
+            rollContext.imageSmoothingEnabled = false;
+          }
+          perspective(rollContext, view, flight, padX, padY);
+          ctx.save();
+          ctx.translate(eyeX, eyeY);
+          ctx.rotate(flight.roll);
+          ctx.drawImage(rollCanvas, -eyeX - padX, -eyeY - padY);
+          ctx.restore();
+        }
+
+        return {
+          draw(ctx, view, flight) {
+            ctx.imageSmoothingEnabled = false;
+            if (view.mode === "overhead") overhead(ctx, view, flight);
+            else if (view.mode === "cockpit" && flight.roll) cockpitRoll(ctx, view, flight);
+            else perspective(ctx, view, flight);
+          },
+        };
+      }
+
+      function createAircraftRenderer() {
+        // Coordinates run noseward, starboard and up. Each facet has a painted panel color.
+        const facets = [];
+        const hull = ["#364557", "#283849", "#1e2a38", "#25313f", "#39475a", "#63788a", "#9aaeb3", "#708891"];
+        const engine = ["#5e6b75", "#354350", "#27323e", "#29343e", "#44555f", "#687d86", "#8a9898", "#6c7b7c"];
+        const orange = "#f37b49";
+        const add = (points, color) =>
+          facets.push({
+            points,
+            color: [
+              parseInt(color.slice(1, 3), 16),
+              parseInt(color.slice(3, 5), 16),
+              parseInt(color.slice(5, 7), 16),
+            ],
+          });
+        function tube(stations, y, scheme) {
+          const rings = stations.map(([x, radius, height, center]) =>
+            Array.from({ length: 8 }, (_, i) => {
+              const angle = ((i + 0.5) * Math.PI) / 4;
+              return [x, y + radius * Math.cos(angle), center - height * Math.sin(angle)];
+            }),
+          );
+          for (let j = 1; j < rings.length; j++) {
+            for (let i = 0; i < 8; i++) {
+              const k = (i + 1) % 8;
+              add([rings[j - 1][i], rings[j - 1][k], rings[j][k], rings[j][i]], scheme[i]);
+            }
+          }
+          add(rings[0], "#24323d");
+          add(rings[rings.length - 1], scheme[0]);
+        }
+        tube(
+          [
+            [-15, 3.0, 1.7, 0],
+            [-8, 4.2, 2.5, 0],
+            [3, 4.0, 2.3, 0],
+            [13, 2.8, 1.7, 0],
+            [18.5, 1.8, 1.2, 0],
+            [24, 0.15, 0.22, 0],
+          ],
+          0,
+          hull,
+        );
+        for (const side of [-1, 1]) {
+          const panel = (points, color) =>
+            add(
+              points.map(([x, y, z]) => [x, y * side, z]),
+              color,
+            );
+          // Thin bevelled wing, separate control surfaces and safety paint on the tip.
+          const outline = [
+            [9, 2.3, 0.7],
+            [4, 6, 0.7],
+            [-8.8, 16.0, 0.1],
+            [-12.1, 15.6, 0],
+            [-9, 6.2, 0.2],
+            [-12, 2.7, 0.2],
+          ];
+          const underside = outline.map(([x, y, z]) => [x, y, z - 0.8]);
+          panel(underside, "#263746");
+          for (let i = 0; i < outline.length; i++) {
+            const j = (i + 1) % outline.length;
+            panel([outline[i], outline[j], underside[j], underside[i]], "#374958");
+          }
+          panel(outline, side < 0 ? "#839697" : "#708490");
+          panel(
+            [
+              [8.4, 2.8, 0.8],
+              [3.8, 5.9, 0.85],
+              [-8.8, 15.9, 0.26],
+              [-8.0, 13.4, 0.41],
+              [1.3, 5.5, 0.88],
+            ],
+            "#d0d3be",
+          );
+          panel(
+            [
+              [3.0, 5.8, 0.85],
+              [-5.6, 12.9, 0.41],
+              [-6.8, 10.4, 0.55],
+              [-2.5, 6.6, 0.79],
+            ],
+            "#516675",
+          );
+          panel(
+            [
+              [-8.2, 12.2, 0.43],
+              [-6.5, 12.7, 0.44],
+              [-8.9, 16.1, 0.27],
+              [-12.1, 15.65, 0.16],
+              [-11.3, 13.6, 0.27],
+            ],
+            orange,
+          );
+          panel(
+            [
+              [-9.6, 8.0, 0.51],
+              [-8.1, 7.2, 0.59],
+              [-9.0, 12.4, 0.37],
+              [-10.9, 13.4, 0.3],
+            ],
+            "#485e6d",
+          );
+          panel(
+            [
+              [-7.0, 3.0, 1],
+              [-10.2, 5.0, 1],
+              [-17.8, 9.2, 0.75],
+              [-19.1, 8.1, 0.65],
+              [-17.0, 3.4, 0.7],
+            ],
+            "#819297",
+          );
+          panel(
+            [
+              [-15.0, 7.7, 0.87],
+              [-17.8, 9.35, 0.82],
+              [-19.1, 8.1, 0.74],
+              [-18.2, 7.0, 0.78],
+            ],
+            "#d76845",
+          );
+          const c = side * 3.15;
+          tube(
+            [
+              [-16.6, 1.85, 1.7, 0.15],
+              [-14.6, 2.15, 1.9, 0.2],
+              [-7.0, 2.25, 2.2, 0.3],
+              [0.4, 1.7, 1.65, 0.1],
+              [4.4, 1.0, 1.1, 0.1],
+            ],
+            c,
+            engine,
+          );
+          const fin = [
+            [-14.9, 3.1, 1.3],
+            [-15.2, 5.5, 6.4],
+            [-12.8, 5.2, 6.7],
+            [-7.7, 3.35, 1.6],
+          ];
+          panel(fin, "#465461");
+          panel(
+            [
+              [-15.24, 5.5, 6.42],
+              [-12.8, 5.22, 6.72],
+              [-12.1, 5.0, 5.75],
+              [-15.2, 5.12, 5.48],
+            ],
+            orange,
+          );
+          panel(
+            [
+              [-13.6, 4.55, 4.5],
+              [-12.5, 4.48, 4.45],
+              [-10.5, 3.8, 2.8],
+              [-11.7, 3.81, 2.87],
+            ],
+            "#afc3bf",
+          );
+          // Recessed exhaust disks face aft.
+          const disk = (radius, x, color) =>
+            add(
+              Array.from({ length: 8 }, (_, i) => {
+                const a = (i * Math.PI) / 4;
+                return [x, c + Math.cos(a) * radius, 0.2 + Math.sin(a) * radius];
+              }),
+              color,
+            );
+          disk(1.65, -16.67, "#d88248");
+          disk(1.04, -16.72, "#ffda80");
+        }
+        tube(
+          [
+            [2.2, 1.4, 0.55, 2],
+            [4.5, 2.6, 1.2, 2.2],
+            [8.0, 2.2, 1.6, 2.05],
+            [12.6, 1.4, 1.15, 1.75],
+            [14.1, 0.18, 0.2, 1.6],
+          ],
+          0,
+          ["#1e3442", "#263e4a", "#253d45", "#324755", "#387079", "#69a6a6", "#c6e2d3", "#386571"],
+        );
+        add(
+          [
+            [7.5, -1.4, 3.2],
+            [9.9, -0.9, 3.18],
+            [11.4, 0, 3.07],
+            [8.3, -0.2, 3.5],
+          ],
+          "#dfefe0",
+        );
+
+        const size = 160,
+          mid = size / 2;
+        const stamp = document.createElement("canvas");
+        const shadow = document.createElement("canvas");
+        stamp.width = shadow.width = stamp.height = shadow.height = size;
+        const raster = stamp.getContext("2d");
+        const shade = shadow.getContext("2d");
+        const pixels = raster.createImageData(size, size);
+        const shadowPixels = shade.createImageData(size, size);
+        const depths = new Float32Array(size * size);
+        let samples = [];
+        let previousTime = -Infinity;
+
+        function triangle(a, b, c, rgb) {
+          const area = (b[1] - c[1]) * (a[0] - c[0]) + (c[0] - b[0]) * (a[1] - c[1]);
+          if (Math.abs(area) < 0.025) return;
+          const left = Math.max(0, Math.floor(Math.min(a[0], b[0], c[0])));
+          const right = Math.min(size - 1, Math.ceil(Math.max(a[0], b[0], c[0])));
+          const top = Math.max(0, Math.floor(Math.min(a[1], b[1], c[1])));
+          const bottom = Math.min(size - 1, Math.ceil(Math.max(a[1], b[1], c[1])));
+          const inv = 1 / area;
+          for (let y = top; y <= bottom; y++) {
+            for (let x = left; x <= right; x++) {
+              const px = x + 0.5 - c[0],
+                py = y + 0.5 - c[1];
+              const u = ((b[1] - c[1]) * px + (c[0] - b[0]) * py) * inv;
+              const v = ((c[1] - a[1]) * px + (a[0] - c[0]) * py) * inv;
+              const w = 1 - u - v;
+              if (u < -0.0001 || v < -0.0001 || w < -0.0001) continue;
+              const z = u * a[2] + v * b[2] + w * c[2],
+                i = y * size + x;
+              if (z < depths[i] - 0.008) continue;
+              depths[i] = z;
+              const offset = i * 4;
+              pixels.data[offset] = rgb[0];
+              pixels.data[offset + 1] = rgb[1];
+              pixels.data[offset + 2] = rgb[2];
+              pixels.data[offset + 3] = 255;
+              shadowPixels.data[offset] = 9;
+              shadowPixels.data[offset + 1] = 28;
+              shadowPixels.data[offset + 2] = 46;
+              shadowPixels.data[offset + 3] = 255;
+            }
+          }
+        }
+        function rasterize(project) {
+          depths.fill(-Infinity);
+          pixels.data.fill(0);
+          shadowPixels.data.fill(0);
+          for (const facet of facets) {
+            const vertices = facet.points.map(project);
+            for (let i = 1; i < vertices.length - 1; i++)
+              triangle(vertices[0], vertices[i], vertices[i + 1], facet.color);
+          }
+          raster.putImageData(pixels, 0, 0);
+          shade.putImageData(shadowPixels, 0, 0);
+        }
+        function line(ctx, x0, y0, x1, y1) {
+          x0 = Math.round(x0);
+          y0 = Math.round(y0);
+          x1 = Math.round(x1);
+          y1 = Math.round(y1);
+          const dx = Math.abs(x1 - x0),
+            sx = x0 < x1 ? 1 : -1,
+            dy = -Math.abs(y1 - y0),
+            sy = y0 < y1 ? 1 : -1;
+          let error = dx + dy;
+          for (;;) {
+            ctx.fillRect(x0, y0, 1, 1);
+            if (x0 === x1 && y0 === y1) break;
+            const e2 = 2 * error;
+            if (e2 >= dy) {
+              error += dy;
+              x0 += sx;
+            }
+            if (e2 <= dx) {
+              error += dx;
+              y0 += sy;
+            }
+          }
+        }
+        function polygon(ctx, pts, color) {
+          ctx.fillStyle = color;
+          ctx.beginPath();
+          pts.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
+          ctx.closePath();
+          ctx.fill();
+        }
+        function record(f) {
+          if (f.time < previousTime || f.time - previousTime > 0.5) {
+            samples = [];
+            for (let age = 1.85; age > 0.02; age -= 0.04) {
+              samples.push({
+                t: f.time - age,
+                x: f.x - age * f.speed * Math.cos(f.heading),
+                y: f.y - age * f.speed * Math.sin(f.heading),
+                heading: f.heading,
+                bank: f.bank,
+                roll: 0,
+              });
+            }
+          }
+          previousTime = f.time;
+          if (!samples.length || f.time - samples[samples.length - 1].t > 0.032) {
+            samples.push({ t: f.time, x: f.x, y: f.y, heading: f.heading, bank: f.bank, roll: f.roll });
+          }
+          while (samples.length && samples[0].t < f.time - 1.9) samples.shift();
+        }
+        function overheadTrails(ctx, f, cx, cy, scale) {
+          const units = 0.82 + 0.82 * f.altitude;
+          const history = samples.concat({
+            t: f.time,
+            x: f.x,
+            y: f.y,
+            heading: f.heading,
+            bank: f.bank,
+            roll: f.roll,
+          });
+          for (const side of [-1, 1]) {
+            let last;
+            for (const p of history) {
+              const age = f.time - p.t,
+                cos = Math.cos(p.heading),
+                sin = Math.sin(p.heading);
+              const angle = p.roll - p.bank * 0.85,
+                wing = side * 15.2;
+              const sideOffset = wing * Math.cos(angle);
+              const x = cx + (p.x - f.x) / units + scale * (-11 * cos - sideOffset * sin);
+              const y =
+                cy +
+                (p.y - f.y) / units +
+                scale * ((-11 * sin + sideOffset * cos) * 0.96 - wing * Math.sin(angle) * 0.29);
+              if (last) {
+                ctx.globalAlpha = Math.max(0, 1 - age / 1.9) * 0.74;
+                ctx.fillStyle = "#e5f7dc";
+                line(ctx, last[0], last[1], x, y);
+              }
+              last = [x, y];
+            }
+          }
+          ctx.globalAlpha = 1;
+        }
+        function drawCockpit(ctx, view, f) {
+          const { width: w, height: h } = view;
+          const cx = Math.round(w / 2),
+            cy = Math.round(h * 0.47);
+          const frame = (pts, col) =>
+            polygon(
+              ctx,
+              pts.map(([x, y]) => [Math.round(x * w), Math.round(y * h)]),
+              col,
+            );
+          // Canopy frame, thin sunlit edges and inset glass combiner.
+          for (const side of [-1, 1]) {
+            const mirrored = (points) => points.map(([x, y]) => [side < 0 ? x : 1 - x, y]);
+            frame(
+              mirrored([
+                [0, 0],
+                [0.055, 0],
+                [0.008, 0.32],
+                [0.019, 0.59],
+                [0.105, 0.84],
+                [0.16, 0.91],
+                [0.04, 0.91],
+                [0, 0.76],
+              ]),
+              "#1c2b35",
+            );
+            frame(
+              mirrored([
+                [0.046, 0],
+                [0.054, 0],
+                [0.009, 0.32],
+                [0.019, 0.59],
+                [0.105, 0.84],
+                [0.095, 0.835],
+                [0.012, 0.61],
+                [0.003, 0.34],
+              ]),
+              "#72868a",
+            );
+          }
+          frame(
+            [
+              [0, 0.85],
+              [0.15, 0.82],
+              [0.26, 0.76],
+              [0.4, 0.8],
+              [0.6, 0.8],
+              [0.74, 0.76],
+              [0.85, 0.82],
+              [1, 0.85],
+              [1, 1],
+              [0, 1],
+            ],
+            "#17242e",
+          );
+          frame(
+            [
+              [0, 0.86],
+              [0.15, 0.83],
+              [0.26, 0.78],
+              [0.4, 0.815],
+              [0.6, 0.815],
+              [0.74, 0.78],
+              [0.85, 0.83],
+              [1, 0.86],
+              [1, 0.878],
+              [0.85, 0.851],
+              [0.74, 0.803],
+              [0.6, 0.836],
+              [0.4, 0.836],
+              [0.26, 0.803],
+              [0.15, 0.851],
+              [0, 0.878],
+            ],
+            "#617681",
+          );
+          frame(
+            [
+              [0.35, 0.82],
+              [0.4, 0.76],
+              [0.6, 0.76],
+              [0.65, 0.82],
+            ],
+            "#33474d",
+          );
+          ctx.save();
+          ctx.fillStyle = "#cff8c3";
+          ctx.font = "7px monospace";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          const bearing = ((Math.round((f.heading * 180) / Math.PI + 90) % 360) + 360) % 360;
+          const bandY = Math.round(h * 0.26);
+          for (let delta = -24; delta <= 24; delta += 4) {
+            const x = cx + Math.round((delta * w) / 280);
+            ctx.fillRect(x, bandY, 1, delta % 12 === 0 ? 4 : 2);
+          }
+          ctx.fillText(String(bearing).padStart(3, "0"), cx, bandY - 6);
+          const bankShift = Math.round(Math.sin(f.bank * 0.65 + f.roll) * 5);
+          line(ctx, cx - 16, cy - bankShift, cx - 5, cy - 1);
+          line(ctx, cx + 5, cy + 1, cx + 16, cy + bankShift);
+          ctx.fillRect(cx, cy - 3, 1, 2);
+          ctx.fillRect(cx - 1, cy, 3, 1);
+          ctx.fillStyle = "#91bcb0";
+          const speed = Math.round(f.speed * 5.2),
+            altitude = Math.round((600 + f.altitude * 9400) / 10) * 10;
+          ctx.fillText(speed + " KT", Math.round(w * 0.25), Math.round(h * 0.89));
+          ctx.fillText(altitude + " FT", Math.round(w * 0.75), Math.round(h * 0.89));
+          const bars = 15,
+            lit = Math.round(6 + 9 * f.boost);
+          for (let i = 0; i < bars; i++) {
+            ctx.fillStyle = i < lit ? (i > 10 ? "#eab37f" : "#8db9aa") : "#36484d";
+            ctx.fillRect(cx + (i - 7) * 3, Math.round(h * 0.88), 2, 3);
+          }
+          ctx.restore();
+        }
+        function draw(ctx, view, f) {
+          record(f);
+          ctx.save();
+          ctx.imageSmoothingEnabled = false;
+          if (view.mode === "cockpit") {
+            drawCockpit(ctx, view, f);
+            ctx.restore();
+            return;
+          }
+          const overhead = view.mode === "overhead";
+          const cx = Math.round(view.width * 0.5),
+            cy = Math.round(view.height * (overhead ? 0.5 : 0.635));
+          const scale = overhead
+            ? Math.min(1.27, Math.max(0.93, view.width / 470))
+            : Math.min(2.7, Math.max(1.85, view.width / 212));
+          const sin = Math.sin(f.heading),
+            cos = Math.cos(f.heading);
+          const roll = f.roll - f.bank * 0.85,
+            sr = Math.sin(roll),
+            cr = Math.cos(roll);
+          function project([x, y, z]) {
+            const b = y * cr - z * sr,
+              v = y * sr + z * cr;
+            if (overhead) {
+              const horiz = x * cos - b * sin,
+                vert = x * sin + b * cos;
+              return [mid + scale * horiz, mid + scale * (vert * 0.96 - v * 0.29), vert * 0.29 + v * 0.96];
+            }
+            return [mid + scale * b, mid - scale * (x * 0.285 + v * 0.958), -x * 0.958 + v * 0.285];
+          }
+          const screen = (point) => {
+            const [x, y] = project(point);
+            return [cx + x - mid, cy + y - mid];
+          };
+          rasterize(project);
+          if (overhead) {
+            overheadTrails(ctx, f, cx, cy, scale);
+            const shift = 5 + f.altitude * 17;
+            ctx.globalAlpha = 0.2 - f.altitude * 0.085;
+            ctx.drawImage(shadow, Math.round(cx - mid + shift * 0.75), Math.round(cy - mid + shift));
+            ctx.globalAlpha = 1;
+          } else {
+            for (const side of [-1, 1]) {
+              const [x, y] = screen([-10.4, side * 15.6, 0.1]);
+              const extent = 18 + f.boost * 17;
+              ctx.globalAlpha = 0.39;
+              ctx.fillStyle = "#eaf7e2";
+              line(ctx, x, y, x + side * extent, y + extent * 0.78);
+              ctx.globalAlpha = 0.17;
+              line(ctx, x + side * extent, y + extent * 0.78, x + side * extent * 1.9, y + extent * 1.5);
+            }
+            ctx.globalAlpha = 1;
+          }
+          for (const side of [-1, 1]) {
+            const nozzle = side * 3.15;
+            const pulse = 0.5 + 0.5 * Math.sin(f.time * 48 + side);
+            const len = 3 + pulse * 2.1 + f.boost * 13;
+            const plume = (fraction, spread, color) => {
+              const tail = -16.45;
+              const points = [
+                screen([tail, nozzle - spread, 0.15]),
+                screen([tail - len * fraction * 0.58, nozzle - spread * 0.66, 0.13]),
+                screen([tail - len * fraction, nozzle, 0.12]),
+                screen([tail - len * fraction * 0.55, nozzle + spread * 0.67, 0.15]),
+                screen([tail, nozzle + spread, 0.16]),
+              ];
+              polygon(ctx, points, color);
+            };
+            plume(1, 1.75, "#ed7147");
+            plume(0.72, 1.21, "#ffc16b");
+            plume(0.38, 0.83, "#fff1b1");
+          }
+          ctx.drawImage(stamp, cx - mid, cy - mid);
+          ctx.restore();
+        }
+        return { draw };
+      }
+
+      // All flight state is shared by the landscape, aircraft, and instrument readouts.
+      const canvas = document.querySelector("canvas");
+      const ctx = canvas.getContext("2d", { alpha: false });
+      const world = createWorldRenderer();
+      const aircraft = createAircraftRenderer();
+      const flight = {
+        x: 0,
+        y: 0,
+        heading: 0,
+        altitude: 0.4,
+        time: 0,
+        speed: 42,
+        bank: 0,
+        boost: 0,
+        roll: 0,
+        turnRate: 0,
+      };
+      const view = { width: 1, height: 1, mode: "overhead" };
+      const cameras = ["overhead", "chase", "cockpit"];
+      const viewButtons = [...document.querySelectorAll("[data-view]")];
+      const help = document.querySelector("dialog");
+      const pauseButton = document.querySelector("#pause");
+      const altitudeInput = document.querySelector("#altitude");
+      const altitudeOutput = document.querySelector("#alt-target");
+      const speedDisplay = document.querySelector("#speed");
+      const altitudeDisplay = document.querySelector("#alt");
+      const headingDisplay = document.querySelector("#heading");
+      const keys = new Set();
+      const input = {
+        pointer: null,
+        heldSince: null,
+        origin: null,
+        dragged: false,
+        target: null,
+        targetAltitude: flight.altitude,
+        lastSteer: -Infinity,
+      };
+
+      let paused = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let rollElapsed = Infinity;
+      let lastFrame = 0;
+      let instrumentTime = -1;
+      let redraw = true;
+      const tau = 2 * Math.PI;
+      const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+      const blend = (value, goal, rate, dt) => value + (goal - value) * (1 - Math.exp(-rate * dt));
+      const altitudeInFeet = (altitude) => Math.round((600 + altitude * 9400) / 10) * 10;
+
+      function resize() {
+        const bounds = canvas.getBoundingClientRect();
+        const pixelSize = Math.max(1.65, bounds.width / 620, bounds.height / 360);
+        view.width = canvas.width = Math.max(1, Math.round(bounds.width / pixelSize));
+        view.height = canvas.height = Math.max(1, Math.round(bounds.height / pixelSize));
+        ctx.imageSmoothingEnabled = false;
+        redraw = true;
+      }
+      new ResizeObserver(resize).observe(canvas);
+      resize();
+
+      function setCamera(mode) {
+        view.mode = mode;
+        for (const button of viewButtons)
+          button.setAttribute("aria-pressed", String(button.dataset.view === mode));
+        input.target = null;
+        redraw = true;
+      }
+      for (const button of viewButtons) {
+        button.addEventListener("click", () => {
+          setCamera(button.dataset.view);
+          canvas.focus({ preventScroll: true });
+        });
+      }
+
+      function syncPause() {
+        pauseButton.classList.toggle("is-paused", paused);
+        pauseButton.setAttribute("aria-label", paused ? "Resume flight" : "Pause flight");
+        document.querySelector("#pause-label").textContent = paused ? "Resume" : "Pause";
+        document.querySelector("#paused").hidden = !paused;
+      }
+      function clearInput() {
+        keys.clear();
+        if (input.pointer !== null && canvas.hasPointerCapture(input.pointer)) {
+          canvas.releasePointerCapture(input.pointer);
+        }
+        input.pointer = null;
+        input.heldSince = null;
+        input.target = null;
+      }
+      function togglePause() {
+        paused = !paused;
+        clearInput();
+        syncPause();
+      }
+      function openHelp() {
+        clearInput();
+        help.showModal();
+      }
+      syncPause();
+      pauseButton.addEventListener("click", togglePause);
+      document.querySelector("#controls").addEventListener("click", openHelp);
+      document.querySelector(".close").addEventListener("click", () => help.close());
+      help.addEventListener("click", (event) => {
+        if (event.target !== help) return;
+        const box = help.getBoundingClientRect();
+        if (
+          event.clientX < box.left ||
+          event.clientX > box.right ||
+          event.clientY < box.top ||
+          event.clientY > box.bottom
+        )
+          help.close();
+      });
+
+      function updateTargetAltitude(value) {
+        input.targetAltitude = clamp(value, 0, 1);
+        altitudeInput.value = String(Math.round(100 * input.targetAltitude));
+        altitudeOutput.value = altitudeInFeet(input.targetAltitude).toLocaleString("en-US") + " ft";
+        altitudeInput.setAttribute("aria-valuetext", altitudeOutput.value);
+      }
+      altitudeInput.addEventListener("input", () => updateTargetAltitude(Number(altitudeInput.value) / 100));
+      updateTargetAltitude(flight.altitude);
+
+      function startRoll() {
+        if (!paused && rollElapsed >= 0.88) rollElapsed = 0;
+      }
+
+      function setPointerTarget(event) {
+        const box = canvas.getBoundingClientRect();
+        const x = event.clientX - box.left - box.width / 2;
+        const y = event.clientY - box.top - box.height / 2;
+        input.target = {
+          angle: Math.atan2(y, x),
+          horizontal: clamp(x / (box.width * 0.4), -1, 1),
+          distance: Math.hypot(x, y),
+        };
+        input.lastSteer = flight.time;
+      }
+      canvas.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0 || !event.isPrimary) return;
+        canvas.focus({ preventScroll: true });
+        canvas.setPointerCapture(event.pointerId);
+        input.pointer = event.pointerId;
+        input.heldSince = flight.time;
+        input.origin = { x: event.clientX, y: event.clientY };
+        input.dragged = false;
+        setPointerTarget(event);
+      });
+      canvas.addEventListener("pointermove", (event) => {
+        if (!event.isPrimary || (event.pointerType !== "mouse" && input.pointer !== event.pointerId)) return;
+        setPointerTarget(event);
+        if (
+          input.pointer === event.pointerId &&
+          Math.hypot(event.clientX - input.origin.x, event.clientY - input.origin.y) > 10
+        )
+          input.dragged = true;
+      });
+      canvas.addEventListener("pointerleave", () => {
+        if (input.pointer === null) input.target = null;
+      });
+      canvas.addEventListener("pointerup", (event) => {
+        if (input.pointer !== event.pointerId) return;
+        if (input.heldSince !== null && flight.time - input.heldSince < 0.22 && !input.dragged) startRoll();
+        input.pointer = null;
+        input.heldSince = null;
+        if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
+        if (event.pointerType !== "mouse") input.target = null;
+      });
+      canvas.addEventListener("lostpointercapture", (event) => {
+        if (input.pointer === event.pointerId) clearInput();
+      });
+      canvas.addEventListener("pointercancel", clearInput);
+      window.addEventListener("blur", clearInput);
+      document.addEventListener("visibilitychange", () => {
+        clearInput();
+        lastFrame = 0;
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (help.open || event.metaKey || event.ctrlKey || event.altKey) return;
+        if (event.key === "?" && !event.repeat) {
+          openHelp();
+          event.preventDefault();
+          return;
+        }
+        if (event.code === "Space" && event.target.closest("button")) return;
+        if (
+          ![
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "ArrowDown",
+            "ShiftLeft",
+            "ShiftRight",
+            "KeyR",
+            "KeyP",
+            "Space",
+          ].includes(event.code)
+        )
+          return;
+        event.preventDefault();
+        keys.add(event.code);
+        if (event.repeat) return;
+        if (event.code === "KeyP") togglePause();
+        if (event.code === "KeyR") startRoll();
+        if (event.code === "Space") setCamera(cameras[(cameras.indexOf(view.mode) + 1) % cameras.length]);
+      });
+      window.addEventListener("keyup", (event) => keys.delete(event.code));
+
+      function step(dt) {
+        flight.time += dt;
+        const turning = Number(keys.has("ArrowRight")) - Number(keys.has("ArrowLeft"));
+        let requestedTurn = 0;
+        if (turning) {
+          input.target = null;
+          input.lastSteer = flight.time;
+          requestedTurn = turning * 1.65;
+        } else if (input.target) {
+          if (view.mode === "overhead") {
+            const difference = input.target.angle - flight.heading;
+            const shortest = Math.atan2(Math.sin(difference), Math.cos(difference));
+            if (input.target.distance > 14) requestedTurn = clamp(shortest * 2.3, -1.65, 1.65);
+          } else {
+            requestedTurn = input.target.horizontal * 1.65;
+          }
+        } else if (flight.time - input.lastSteer > 2) {
+          requestedTurn = 0.1 * Math.sin(flight.time * 0.24);
+        }
+        flight.turnRate = blend(flight.turnRate, requestedTurn, 5, dt);
+        flight.bank = blend(flight.bank, flight.turnRate / 1.65, 5, dt);
+        flight.heading = (flight.heading + flight.turnRate * dt + tau) % tau;
+
+        const climbing = Number(keys.has("ArrowUp")) - Number(keys.has("ArrowDown"));
+        if (climbing) updateTargetAltitude(input.targetAltitude + climbing * dt * 0.38);
+        flight.altitude = blend(flight.altitude, input.targetAltitude, 2.4, dt);
+        const boostHeld =
+          keys.has("ShiftLeft") ||
+          keys.has("ShiftRight") ||
+          (input.heldSince !== null && flight.time - input.heldSince >= 0.22);
+        flight.boost = blend(flight.boost, boostHeld ? 1 : 0, boostHeld ? 4.2 : 2.5, dt);
+        flight.speed = 42 + flight.boost * 56;
+        flight.x += Math.cos(flight.heading) * flight.speed * dt;
+        flight.y += Math.sin(flight.heading) * flight.speed * dt;
+        rollElapsed += dt;
+        const rollProgress = Math.min(1, rollElapsed / 0.88);
+        flight.roll = rollProgress < 1 ? tau * rollProgress * rollProgress * (3 - 2 * rollProgress) : 0;
+      }
+
+      function drawInstruments() {
+        speedDisplay.value = Math.round(flight.speed * 5.2);
+        altitudeDisplay.value = altitudeInFeet(flight.altitude).toLocaleString("en-US");
+        const degrees = Math.round((flight.heading * 180) / Math.PI + 90) % 360;
+        headingDisplay.value = String(degrees).padStart(3, "0") + "°";
+      }
+
+      function animate(stamp) {
+        const dt = lastFrame ? Math.min(0.05, (stamp - lastFrame) / 1000) : 0;
+        lastFrame = stamp;
+        const flying = !paused && !help.open && !document.hidden;
+        if (flying) step(dt);
+        if (flying || redraw) {
+          world.draw(ctx, view, flight);
+          aircraft.draw(ctx, view, flight);
+          if (redraw || flight.time - instrumentTime >= 0.1) {
+            drawInstruments();
+            instrumentTime = flight.time;
+          }
+          redraw = false;
+        }
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    </script>
+  </body>
+</html>
